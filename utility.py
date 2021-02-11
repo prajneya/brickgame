@@ -2,6 +2,7 @@ from board import *
 from bricks import *
 from paddle import *
 from ball import *
+from collisions import *
 import random
 from time import sleep
 import os
@@ -25,17 +26,29 @@ else:
 	obj_board.grid[PADDLE_Y-1][PADDLE_START+17] = 'O'
 
 def move_ball():
-	print("SOP: ", obj_ball.paddleStick)
 	if obj_ball.paddleStick == False:
-		print("BALL POSITION: ", obj_ball.x, obj_ball.y)
 		obj_board.grid[obj_ball.y][obj_ball.x] = ' '
 		if obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == " ":
 			obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] = 'O'
 			obj_ball.update_position(obj_ball.x+obj_ball.vel_x, obj_ball.y - obj_ball.vel_y)
-		elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 1 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 2 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 3 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 10 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 'P' or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == '#':
-			obj_ball.update_velocity(obj_ball.vel_x, -1 * obj_ball.vel_y)
-			obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] = 'O'
-			obj_ball.update_position(obj_ball.x+obj_ball.vel_x, obj_ball.y - obj_ball.vel_y)
+		elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 1 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 2 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 3 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 10:
+			ball_brick_collision(obj_ball, obj_board)
+		elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == '#':
+			if obj_ball.y - obj_ball.vel_y == 0:
+				ball_topwall_collision(obj_ball, obj_board)
+			elif obj_ball.x + obj_ball.vel_x == 0 or obj_ball.x + obj_ball.vel_x == WIDTH-1:
+				ball_sidewall_collision(obj_ball, obj_board)
+			else:
+				os.system('tput reset')
+				os.system('clear')
+				print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"GAME OVER!".center(SCREEN)+Style.RESET_ALL)
+		elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 'P':
+			if obj_ball.x + obj_ball.vel_x >= obj_paddle.start_x and obj_ball.x + obj_ball.vel_x <= obj_paddle.start_x+6:
+				ball_paddle_left_collision(obj_ball, obj_board)
+			elif obj_ball.x + obj_ball.vel_x > obj_paddle.start_x+6 and obj_ball.x + obj_ball.vel_x <= obj_paddle.start_x+14:
+				ball_paddle_center_collision(obj_ball, obj_board)
+			else:
+				ball_paddle_right_collision(obj_ball, obj_board)
 		# Update Board
 		os.system('clear')
 		obj_board.print_board(0)
@@ -47,13 +60,15 @@ def move_paddle(char):
 
 	if char == 'd':
 		obj_board.grid[PADDLE_Y][curr_start_x] = ' '
-		if curr_end_x+1 < WIDTH-1:
+		obj_board.grid[PADDLE_Y][curr_start_x+1] = ' '
+		if curr_end_x+2 < WIDTH-1:
 			obj_board.grid[PADDLE_Y][curr_end_x+1] = 'P'
-			obj_paddle.update(curr_start_x+1, curr_end_x+1)
+			obj_board.grid[PADDLE_Y][curr_end_x+2] = 'P'
+			obj_paddle.update(curr_start_x+2, curr_end_x+2)
 			if obj_ball.paddleStick:
 				obj_board.grid[obj_ball.y][obj_ball.x] = ' '
-				obj_board.grid[PADDLE_Y - 1][obj_ball.x+1] = 'O'
-				obj_ball.update_position(obj_ball.x+1, PADDLE_Y - 1)
+				obj_board.grid[PADDLE_Y - 1][obj_ball.x+2] = 'O'
+				obj_ball.update_position(obj_ball.x+2, PADDLE_Y - 1)
 		else:
 			obj_paddle.update(curr_start_x, curr_end_x)
 
@@ -63,13 +78,15 @@ def move_paddle(char):
 		obj_board.print_board(0)
 	elif char == 'a':
 		obj_board.grid[PADDLE_Y][curr_end_x] = ' '
-		if curr_start_x-1 > 0:
+		obj_board.grid[PADDLE_Y][curr_end_x-1] = ' '
+		if curr_start_x-2 > 0:
 			obj_board.grid[PADDLE_Y][curr_start_x-1] = 'P'
-			obj_paddle.update(curr_start_x-1, curr_end_x-1)
+			obj_board.grid[PADDLE_Y][curr_start_x-2] = 'P'
+			obj_paddle.update(curr_start_x-2, curr_end_x-2)
 			if obj_ball.paddleStick:
 				obj_board.grid[obj_ball.y][obj_ball.x] = ' '
-				obj_board.grid[PADDLE_Y - 1][obj_ball.x-1] = 'O'
-				obj_ball.update_position(obj_ball.x-1, PADDLE_Y - 1)
+				obj_board.grid[PADDLE_Y - 1][obj_ball.x-2] = 'O'
+				obj_ball.update_position(obj_ball.x-2, PADDLE_Y - 1)
 		else:
 			obj_paddle.update(curr_start_x, curr_end_x)
 		# Update Board
