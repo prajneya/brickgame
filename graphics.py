@@ -2,14 +2,10 @@ import os
 import signal
 from alarmexception import AlarmException
 from getch import _getChUnix as getChar
-from time import sleep
 from colorama import init, Fore, Back, Style, Cursor
 from utility import *    
 
 def take_input():
-
-	curr_start_x = paddle.start_x
-	curr_end_x = paddle.end_x
 
 	def alarmhandler(signum, frame):
 	    raise AlarmException
@@ -35,8 +31,10 @@ def take_input():
 	elif char == 'q':
 		os.system('tput reset')
 		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"Don't Quit!".center(SCREEN)+Style.RESET_ALL)
+	elif char == ' ':
+		obj_ball.paddleStick = False
+	move_ball()
 	move_paddle(char)
-
 
 def paint_landing_screen():
 	if LANDING:
@@ -54,13 +52,31 @@ def paint_landing_screen():
 		
 		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
 		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
 
 		print(Fore.RED + Style.BRIGHT+ Back.WHITE + " PRESS P TO PLAY ".center(SCREEN)+Style.RESET_ALL)
 
 		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
 		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
 
 		print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + " A GAME BY PRAJNEYA KUMAR ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
 		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
 		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
 		

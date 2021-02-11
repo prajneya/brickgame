@@ -49,7 +49,9 @@ class Board:
                     elif self.grid[i][j] == 'P':
                         print(Back.BLACK + " " + Back.RESET,end='') 
                     elif self.grid[i][j] == '#':
-                        print(Back.WHITE + " " + Back.RESET,end='') 
+                        print(Back.WHITE + " " + Back.RESET,end='')
+                    elif self.grid[i][j] == 'O':
+                        print(Back.MAGENTA + Fore.RED + self.grid[i][j] + Back.RESET,end='')  
                     else:
                         print(self.grid[i][j],end='')  
                     
