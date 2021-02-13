@@ -1,7 +1,4 @@
-PADDLE_START = 30
-PADDLE_END = 50
-
-PADDLE_Y = 37
+from variables import *
 
 class Paddle:
 	def __init__(self, start_x, end_x):

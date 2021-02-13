@@ -1,4 +1,4 @@
-BRICK_WIDTH = 7
+from constants import *
 
 class Brick():
 	def __init__(self, x, y, hits):

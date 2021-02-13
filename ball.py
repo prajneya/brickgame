@@ -1,5 +1,4 @@
-VELOCITY_X = 1
-VELOCITY_Y = 1
+from variables import *
 
 class Ball():
 	def __init__(self, x, y):

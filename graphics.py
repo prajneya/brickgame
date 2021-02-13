@@ -33,8 +33,10 @@ def take_input():
 		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"Don't Quit!".center(SCREEN)+Style.RESET_ALL)
 	elif char == ' ':
 		obj_ball.paddleStick = False
-	move_ball()
+
+	move_balls()
 	move_paddle(char)
+	move_powerups()
 	
 
 def paint_landing_screen():

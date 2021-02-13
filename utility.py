@@ -1,58 +1,37 @@
-from board import *
-from bricks import *
-from paddle import *
-from ball import *
 from collisions import *
-import random
+from constants import *
 from time import sleep
 import os
 
-obj_board = Board(HT, WIDTH)
-obj_paddle = Paddle(PADDLE_START, PADDLE_END)
+def move_balls():
+	for ball in obj_balls:
+		if ball.paddleStick == False:
+			obj_board.grid[ball.y][ball.x] = ' '
+			if obj_board.grid[ball.y - ball.vel_y][ball.x + ball.vel_x] == " ":
+				obj_board.grid[ball.y - ball.vel_y][ball.x + ball.vel_x] = 'O'
+				ball.update_position(ball.x+ball.vel_x, ball.y - ball.vel_y)
+			elif obj_board.grid[ball.y - ball.vel_y][ball.x + ball.vel_x] == 1 or obj_board.grid[ball.y - ball.vel_y][ball.x + ball.vel_x] == 2 or obj_board.grid[ball.y - ball.vel_y][ball.x + ball.vel_x] == 3 or obj_board.grid[ball.y - ball.vel_y][ball.x + ball.vel_x] == 10:
+				ball_brick_collision(ball, obj_board)
 
-obj_board.create_board()
-
-# Generate Random Position for Ball
-ball_pos = random.randint(0, 2)
-
-if ball_pos == 0:
-	obj_ball = Ball(PADDLE_START+3, PADDLE_Y-1)
-	obj_board.grid[PADDLE_Y-1][PADDLE_START+3] = 'O'
-elif ball_pos == 1:
-	obj_ball = Ball(PADDLE_START+10, PADDLE_Y-1)
-	obj_board.grid[PADDLE_Y-1][PADDLE_START+10] = 'O'
-else:
-	obj_ball = Ball(PADDLE_START+17, PADDLE_Y-1)
-	obj_board.grid[PADDLE_Y-1][PADDLE_START+17] = 'O'
-
-def move_ball():
-	if obj_ball.paddleStick == False:
-		obj_board.grid[obj_ball.y][obj_ball.x] = ' '
-		if obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == " ":
-			obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] = 'O'
-			obj_ball.update_position(obj_ball.x+obj_ball.vel_x, obj_ball.y - obj_ball.vel_y)
-		elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 1 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 2 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 3 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 10:
-			ball_brick_collision(obj_ball, obj_board)
-
-		elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == '#':
-			if obj_ball.y - obj_ball.vel_y == 0:
-				ball_topwall_collision(obj_ball, obj_board)
-			elif obj_ball.x + obj_ball.vel_x == 0 or obj_ball.x + obj_ball.vel_x == WIDTH-1:
-				ball_sidewall_collision(obj_ball, obj_board)
-			else:
-				os.system('tput reset')
-				os.system('clear')
-				print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"GAME OVER!".center(SCREEN)+Style.RESET_ALL)
-		elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 'P':
-			if obj_ball.x + obj_ball.vel_x >= obj_paddle.start_x and obj_ball.x + obj_ball.vel_x <= obj_paddle.start_x+6:
-				ball_paddle_left_collision(obj_ball, obj_board)
-			elif obj_ball.x + obj_ball.vel_x > obj_paddle.start_x+6 and obj_ball.x + obj_ball.vel_x <= obj_paddle.start_x+14:
-				ball_paddle_center_collision(obj_ball, obj_board)
-			else:
-				ball_paddle_right_collision(obj_ball, obj_board)
-		# Update Board
-		os.system('clear')
-		obj_board.print_board(0)
+			elif obj_board.grid[ball.y - ball.vel_y][ball.x + ball.vel_x] == '#':
+				if ball.y - ball.vel_y == 0:
+					ball_topwall_collision(ball, obj_board)
+				elif ball.x + ball.vel_x == 0 or ball.x + ball.vel_x == WIDTH-1:
+					ball_sidewall_collision(ball, obj_board)
+				else:
+					os.system('tput reset')
+					os.system('clear')
+					print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"GAME OVER!".center(SCREEN)+Style.RESET_ALL)
+			elif obj_board.grid[ball.y - ball.vel_y][ball.x + ball.vel_x] == 'P':
+				if ball.x + ball.vel_x >= obj_paddle.start_x and ball.x + ball.vel_x <= obj_paddle.start_x+6:
+					ball_paddle_left_collision(ball, obj_board)
+				elif ball.x + ball.vel_x > obj_paddle.start_x+6 and ball.x + ball.vel_x <= obj_paddle.start_x+14:
+					ball_paddle_center_collision(ball, obj_board)
+				else:
+					ball_paddle_right_collision(ball, obj_board)
+			# Update Board
+			os.system('clear')
+			obj_board.print_board(0)
 
 def move_paddle(char):
 
@@ -94,6 +73,32 @@ def move_paddle(char):
 		os.system('clear')
 		obj_board.print_board(0)
 
+def move_powerups():
+	for powerup in obj_powerups:
+		obj_board.grid[powerup.y][powerup.x] = powerup.cover
+		if powerup.y+1 >= HT:
+			obj_powerups.remove(powerup)
+		elif obj_board.grid[powerup.y+1][powerup.x]=="P":
+			obj_powerups.remove(powerup)
+			num_balls = len(obj_balls)
+			for i in range(0, num_balls):
+				obj_temp_ball = Ball(obj_paddle.start_x+3, PADDLE_Y-1)
+				obj_board.grid[PADDLE_Y-1][obj_paddle.start_x+3] = 'O'
+				obj_temp_ball.update_sticky(False)
+				obj_balls.append(obj_temp_ball)
+		else:
+			if obj_board.grid[powerup.y+1][powerup.x] == "O":
+				gridValue = ' '
+			else:
+				gridValue = obj_board.grid[powerup.y+1][powerup.x]
+			obj_board.grid[powerup.y+1][powerup.x] = powerup.power
+			powerup.add_power(powerup.power, gridValue)
+			powerup.update_position(powerup.x, powerup.y+1)
+		# Update Board
+		os.system('clear')
+		obj_board.print_board(0)
+
+
 def paint_level():
 	
 	# Set All Bricks in Position
@@ -124,6 +129,8 @@ def paint_level():
 	# Set Paddle in Position
 	for i in range(PADDLE_START, PADDLE_END+1):
 		obj_board.grid[PADDLE_Y][i] = 'P'
+
+	GAME_START = True
 
 	# Print Board
 	obj_board.print_board(0)

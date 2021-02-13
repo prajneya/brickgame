@@ -1,12 +1,5 @@
 from colorama import init, Fore, Back, Style, Cursor
-
-HT=40
-SCREEN=200
-WIDTH=200
-BRICK_WIDTH = 7
-LANDING = True
-GAME_START = False 
-BRICK_RANGE = 11
+from variables import *
 
 class Board:
 
@@ -64,6 +57,8 @@ class Board:
                         print(Back.BLACK + " " + Back.RESET,end='') 
                     elif self.grid[i][j] == '#':
                         print(Back.WHITE + " " + Back.RESET,end='')
+                    elif self.grid[i][j] == 'd':
+                        print(Back.YELLOW + "D" + Back.RESET,end='')
                     elif self.grid[i][j] == 'O':
                         print(Back.MAGENTA + Fore.RED + self.grid[i][j] + Back.RESET,end='')  
                     else:
