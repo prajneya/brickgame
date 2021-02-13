@@ -58,7 +58,17 @@ class Board:
                     elif self.grid[i][j] == '#':
                         print(Back.WHITE + " " + Back.RESET,end='')
                     elif self.grid[i][j] == 'd':
-                        print(Back.YELLOW + "D" + Back.RESET,end='')
+                        print(Back.GREEN + "D" + Back.RESET,end='')
+                    elif self.grid[i][j] == 'e':
+                        print(Back.GREEN + "E" + Back.RESET,end='')
+                    elif self.grid[i][j] == 's':
+                        print(Back.GREEN + "S" + Back.RESET,end='')
+                    elif self.grid[i][j] == 'f':
+                        print(Back.GREEN + "F" + Back.RESET,end='')
+                    elif self.grid[i][j] == 't':
+                        print(Back.GREEN + "T" + Back.RESET,end='')
+                    elif self.grid[i][j] == 'c':
+                        print(Back.GREEN + "C" + Back.RESET,end='')
                     elif self.grid[i][j] == 'O':
                         print(Back.MAGENTA + Fore.RED + self.grid[i][j] + Back.RESET,end='')  
                     else:

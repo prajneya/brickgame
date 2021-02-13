@@ -80,12 +80,13 @@ def move_powerups():
 			obj_powerups.remove(powerup)
 		elif obj_board.grid[powerup.y+1][powerup.x]=="P":
 			obj_powerups.remove(powerup)
-			num_balls = len(obj_balls)
-			for i in range(0, num_balls):
-				obj_temp_ball = Ball(obj_paddle.start_x+3, PADDLE_Y-1)
-				obj_board.grid[PADDLE_Y-1][obj_paddle.start_x+3] = 'O'
-				obj_temp_ball.update_sticky(False)
-				obj_balls.append(obj_temp_ball)
+			if powerup.power == "d":
+				num_balls = len(obj_balls)
+				for i in range(0, num_balls):
+					obj_temp_ball = Ball(obj_paddle.start_x+3, PADDLE_Y-1)
+					obj_board.grid[PADDLE_Y-1][obj_paddle.start_x+3] = 'O'
+					obj_temp_ball.update_sticky(False)
+					obj_balls.append(obj_temp_ball)
 		else:
 			if obj_board.grid[powerup.y+1][powerup.x] == "O":
 				gridValue = ' '
