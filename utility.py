@@ -33,6 +33,7 @@ def move_ball():
 			obj_ball.update_position(obj_ball.x+obj_ball.vel_x, obj_ball.y - obj_ball.vel_y)
 		elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 1 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 2 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 3 or obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 10:
 			ball_brick_collision(obj_ball, obj_board)
+
 		elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == '#':
 			if obj_ball.y - obj_ball.vel_y == 0:
 				ball_topwall_collision(obj_ball, obj_board)
@@ -98,8 +99,8 @@ def paint_level():
 	# Set All Bricks in Position
 	for y in range(8, 8+BRICK_RANGE):
 		j = 60 - 3*(y%BRICK_RANGE)
-		x = 10 + y%BRICK_RANGE
-		for i in range(x):
+		num_bricks = 10 + y%BRICK_RANGE
+		for i in range(num_bricks):
 			strength = random.randint(1, 4)
 			if strength == 1:
 				b = StrengthOne(j, y)

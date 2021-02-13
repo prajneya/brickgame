@@ -30,7 +30,21 @@ class Board:
                     self.temp.append(" ")
             self.grid.append(self.temp)
         # self.grid=np.array(self.grid)
-        
+
+    def update_board_brick(self, i, j, brickValue, gridValue):
+        hit_coordinate = j
+
+        while(self.grid[i][j]==brickValue):
+            j -= 1
+
+        start_coordinate = j+1
+
+        while(hit_coordinate > start_coordinate+BRICK_WIDTH):
+            start_coordinate+=BRICK_WIDTH
+
+        for k in range(start_coordinate, start_coordinate+BRICK_WIDTH+1):
+            self.grid[i][k] = gridValue
+
 
     #function to print the playing board
     def print_board(self, factor):

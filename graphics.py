@@ -35,6 +35,7 @@ def take_input():
 		obj_ball.paddleStick = False
 	move_ball()
 	move_paddle(char)
+	
 
 def paint_landing_screen():
 	if LANDING:
