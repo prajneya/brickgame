@@ -5,6 +5,7 @@ class Ball():
 		self.x = x
 		self.y = y
 		self.paddleStick = True
+		self.hulk = False
 		if x >= 30 and x <= 36:
 			self.vel_x = -1 * VELOCITY_X
 			self.vel_y = VELOCITY_Y

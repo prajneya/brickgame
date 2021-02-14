@@ -25,7 +25,7 @@ def take_input():
 	char=INPUT_CHAR
 
 	if char == 'p':
-		os.system('clear')
+		print("\033[0;0H")
 		LANDING = False
 		paint_level()
 	elif char == 'q':
@@ -41,7 +41,7 @@ def take_input():
 
 def paint_landing_screen():
 	if LANDING:
-		os.system('clear')
+		print("\033[0;0H")
 		print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "                                                                                                               ".center(SCREEN)+Style.RESET_ALL)
 		print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "                                                                                                               ".center(SCREEN)+Style.RESET_ALL)
 		print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + " _    _      _                            _          _____      _      _    _____                _             ".center(SCREEN))

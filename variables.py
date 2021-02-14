@@ -1,3 +1,5 @@
+GAME_START = False
+
 VELOCITY_X = 1
 VELOCITY_Y = 1
 

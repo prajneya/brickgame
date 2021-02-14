@@ -1,18 +1,21 @@
 from powerups import *
 
-def ball_brick_collision(obj_ball, obj_board):
+def ball_brick_collision(obj_ball, obj_board, next_y, next_x):
 
-	if obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 1:
-		obj_board.update_board_brick(obj_ball.y - obj_ball.vel_y, obj_ball.x + obj_ball.vel_x, 1, ' ')
-		generate_powerup(obj_ball.x + obj_ball.vel_x, obj_ball.y - obj_ball.vel_y)
-	elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 2:
-		obj_board.update_board_brick(obj_ball.y - obj_ball.vel_y, obj_ball.x + obj_ball.vel_x, 2, 1)
-	elif obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] == 3:
-		obj_board.update_board_brick(obj_ball.y - obj_ball.vel_y, obj_ball.x + obj_ball.vel_x, 3, 2)
+	if obj_ball.hulk:
+		obj_board.update_board_brick(next_y, next_x, obj_board.grid[next_y][next_x], ' ')
+		generate_powerup(next_x, next_y)
+	elif obj_board.grid[next_y][next_x] == 1:
+		obj_board.update_board_brick(next_y, next_x, 1, ' ')
+		generate_powerup(next_x, next_y)
+	elif obj_board.grid[next_y][next_x] == 2:
+		obj_board.update_board_brick(next_y, next_x, 2, 1)
+	elif obj_board.grid[next_y][next_x] == 3:
+		obj_board.update_board_brick(next_y, next_x, 3, 2)
 
 	obj_ball.update_velocity(obj_ball.vel_x, -1 * obj_ball.vel_y)
-	obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] = 'O'
-	obj_ball.update_position(obj_ball.x+obj_ball.vel_x, obj_ball.y - obj_ball.vel_y)
+	obj_board.grid[next_y-obj_ball.vel_y][next_x] = 'O'
+	obj_ball.update_position(next_x, next_y-obj_ball.vel_y)
 
 def ball_topwall_collision(obj_ball, obj_board):
 	obj_ball.update_velocity(obj_ball.vel_x, -1 * obj_ball.vel_y)

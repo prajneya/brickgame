@@ -15,6 +15,8 @@ obj_board.create_board()
 obj_powerups = []
 obj_balls = []
 
+active_powerups = []
+
 # Generate Random Position for Ball
 ball_pos = random.randint(0, 2)
 
