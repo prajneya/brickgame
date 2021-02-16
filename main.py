@@ -36,7 +36,3 @@ while True:
 	for powerup in obj_powerups:
 		if powerup not in without_duplicates:
 			without_duplicates.append(powerup)
-
-	print(len(obj_powerups), len(without_duplicates))
-	# for powerup in obj_powerups:
-	# 	print(powerup.power, powerup.x, powerup.y)
