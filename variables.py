@@ -19,3 +19,8 @@ PADDLE_Y = 37
 VELOCITY_FACTOR = 1
 
 DOUBLE_BALLS = False
+
+def SafeOrNot(x, y):
+	if x >= 0 and x <= WIDTH-1 and y >= 0 and y <= HT-1:
+		return True
+	return False

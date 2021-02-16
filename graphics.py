@@ -4,6 +4,7 @@ from alarmexception import AlarmException
 from getch import _getChUnix as getChar
 from colorama import init, Fore, Back, Style, Cursor
 from utility import *    
+import variables
 
 def take_input():
 
@@ -24,23 +25,24 @@ def take_input():
 	INPUT_CHAR = user_input()
 	char=INPUT_CHAR
 
-	if char == 'p':
+	if char == 'p' and variables.LANDING:
 		print("\033[0;0H")
-		LANDING = False
+		variables.LANDING = False
 		paint_level()
 	elif char == 'q':
+		os.system('clear')
 		os.system('tput reset')
-		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"Don't Quit!".center(SCREEN)+Style.RESET_ALL)
-	elif char == ' ':
-		obj_ball.paddleStick = False
+		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"GAME OVER".center(SCREEN)+Style.RESET_ALL)
+		variables.GAME_START = False
+		variables.LANDING = True
+	elif char == ' ' and variables.GAME_START:
+		for ball in obj_balls:
+			ball.paddleStick = False
 
-	move_balls()
 	move_paddle(char)
-	move_powerups()
-	
 
 def paint_landing_screen():
-	if LANDING:
+	if variables.LANDING:
 		print("\033[0;0H")
 		print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "                                                                                                               ".center(SCREEN)+Style.RESET_ALL)
 		print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "                                                                                                               ".center(SCREEN)+Style.RESET_ALL)

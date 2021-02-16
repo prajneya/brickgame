@@ -1,6 +1,8 @@
 from graphics import *
 import variables
+import os
 
+os.system('clear')
 print("\033[0;0H")
 
 paint_landing_screen()
@@ -11,6 +13,7 @@ while True:
 	time_spent = 0
 	
 	for powerup in active_powerups:
+		time_spent = 0
 		if powerup.power == "t":
 			time_spent = datetime.datetime.utcnow() - powerup.createdAt
 			if time_spent.total_seconds() > 10:
@@ -26,5 +29,14 @@ while True:
 	if variables.GAME_START:
 		print("\033[0;0H")
 		obj_board.print_board(0)
+		move_balls()
+		move_powerups()
 
-	print(time_spent)
+	without_duplicates = []
+	for powerup in obj_powerups:
+		if powerup not in without_duplicates:
+			without_duplicates.append(powerup)
+
+	print(len(obj_powerups), len(without_duplicates))
+	# for powerup in obj_powerups:
+	# 	print(powerup.power, powerup.x, powerup.y)

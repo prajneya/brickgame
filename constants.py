@@ -17,7 +17,7 @@ obj_balls = []
 
 active_powerups = []
 
-# Generate Random Position for Ball
+# Generate Initial Random Position for Ball
 ball_pos = random.randint(0, 2)
 
 if ball_pos == 0:

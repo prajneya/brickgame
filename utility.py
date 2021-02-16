@@ -3,49 +3,65 @@ from constants import *
 from time import sleep
 import variables
 import os
+import sys
 
 def move_balls():
-	collided = False
 	for ball in obj_balls:
+		collided = False
 		if ball.paddleStick == False:
 			for velocity in range(1, variables.VELOCITY_FACTOR+1):
 				obj_board.grid[ball.y][ball.x] = ' '
-				if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 1 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 2 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 3 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 10:
-					ball_brick_collision(ball, obj_board, ball.y - velocity*ball.vel_y, ball.x + velocity*ball.vel_x)
-					collided = True
-					break
+				if SafeOrNot(ball.x + velocity*ball.vel_x, ball.y - velocity*ball.vel_y):
+					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 1 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 2 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 3 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 10:
+						ball_brick_collision(ball, obj_board, ball.y - velocity*ball.vel_y, ball.x + velocity*ball.vel_x)
+						collided = True
+						break
 
-				elif obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == '#':
-					if ball.y - velocity*ball.vel_y == 0:
-						ball_topwall_collision(ball, obj_board)
-						collided = True
-						break
-					elif ball.x + velocity*ball.vel_x == 0 or ball.x + velocity*ball.vel_x == WIDTH-1:
-						ball_sidewall_collision(ball, obj_board)
-						collided = True
-						break
-					else:
+					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == '#':
+						if ball.y - velocity*ball.vel_y == 0:
+							ball_topwall_collision(ball, obj_board)
+							collided = True
+							break
+						elif ball.x + velocity*ball.vel_x == 0 or ball.x + velocity*ball.vel_x == WIDTH-1:
+							ball_sidewall_collision(ball, obj_board)
+							collided = True
+							break
+						else:
+							obj_balls.remove(ball)
+							if(len(obj_balls)==0):
+								variables.GAME_START = False
+								os.system('clear')
+								print("\033[0;0H")
+								print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"GAME OVER!".center(SCREEN)+Style.RESET_ALL)
+							break
+
+					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 'P':
+						if ball.x + velocity*ball.vel_x >= obj_paddle.start_x and ball.x + velocity*ball.vel_x <= obj_paddle.start_x+6:
+							ball_paddle_left_collision(ball, obj_board)
+							collided = True
+							break
+						elif ball.x + velocity*ball.vel_x > obj_paddle.start_x+6 and ball.x + velocity*ball.vel_x <= obj_paddle.start_x+14:
+							ball_paddle_center_collision(ball, obj_board)
+							collided = True
+							break
+						else:
+							ball_paddle_right_collision(ball, obj_board)
+							collided = True
+							break
+
+					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == " ":
+						continue
+			if collided == False:
+				if SafeOrNot(ball.x + variables.VELOCITY_FACTOR*ball.vel_x, ball.y - variables.VELOCITY_FACTOR*ball.vel_y):
+					obj_board.grid[ball.y - variables.VELOCITY_FACTOR*ball.vel_y][ball.x + variables.VELOCITY_FACTOR*ball.vel_x] = 'O'
+					ball.update_position(ball.x + variables.VELOCITY_FACTOR*ball.vel_x, ball.y - variables.VELOCITY_FACTOR*ball.vel_y)
+				else:
+					obj_balls.remove(ball)
+					if(len(obj_balls)==0):
+						variables.GAME_START = False
+						os.system('clear')
 						print("\033[0;0H")
 						print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"GAME OVER!".center(SCREEN)+Style.RESET_ALL)
-						obj_balls.remove(ball)
-				elif obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 'P':
-					if ball.x + velocity*ball.vel_x >= obj_paddle.start_x and ball.x + velocity*ball.vel_x <= obj_paddle.start_x+6:
-						ball_paddle_left_collision(ball, obj_board)
-						collided = True
-						break
-					elif ball.x + velocity*ball.vel_x > obj_paddle.start_x+6 and ball.x + velocity*ball.vel_x <= obj_paddle.start_x+14:
-						ball_paddle_center_collision(ball, obj_board)
-						collided = True
-						break
-					else:
-						ball_paddle_right_collision(ball, obj_board)
-						collided = True
-						break
-				elif obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == " ":
-					continue
-			if collided == False:
-				obj_board.grid[ball.y - variables.VELOCITY_FACTOR*ball.vel_y][ball.x + variables.VELOCITY_FACTOR*ball.vel_x] = 'O'
-				ball.update_position(ball.x + variables.VELOCITY_FACTOR*ball.vel_x, ball.y - variables.VELOCITY_FACTOR*ball.vel_y)
 
 def move_paddle(char):
 
@@ -53,55 +69,89 @@ def move_paddle(char):
 	curr_end_x = obj_paddle.end_x
 
 	if char == 'd':
-		obj_board.grid[PADDLE_Y][curr_start_x] = ' '
-		obj_board.grid[PADDLE_Y][curr_start_x+1] = ' '
-		if curr_end_x+2 < WIDTH-1:
+		if curr_end_x+3 < WIDTH-1:
+			obj_board.grid[PADDLE_Y][curr_start_x] = ' '
+			obj_board.grid[PADDLE_Y][curr_start_x+1] = ' '
+			obj_board.grid[PADDLE_Y][curr_start_x+2] = ' '
 			obj_board.grid[PADDLE_Y][curr_end_x+1] = 'P'
 			obj_board.grid[PADDLE_Y][curr_end_x+2] = 'P'
-			obj_paddle.update(curr_start_x+2, curr_end_x+2)
-			if obj_balls[0].paddleStick:
-				obj_board.grid[obj_ball.y][obj_balls[0].x] = ' '
-				obj_board.grid[PADDLE_Y - 1][obj_balls[0].x+2] = 'O'
-				obj_balls[0].update_position(obj_ball.x+2, PADDLE_Y - 1)
+			obj_board.grid[PADDLE_Y][curr_end_x+3] = 'P'
+			obj_paddle.update(curr_start_x+3, curr_end_x+3)
+			for ball in obj_balls:
+				if ball.paddleStick:
+					obj_board.grid[ball.y][ball.x] = ' '
+					obj_board.grid[PADDLE_Y - 1][ball.x+3] = 'O'
+					ball.update_position(ball.x+3, PADDLE_Y - 1)
 		else:
 			obj_paddle.update(curr_start_x, curr_end_x)
 
 	elif char == 'a':
-		obj_board.grid[PADDLE_Y][curr_end_x] = ' '
-		obj_board.grid[PADDLE_Y][curr_end_x-1] = ' '
-		if curr_start_x-2 > 0:
+		if curr_start_x-3 > 0:
+			obj_board.grid[PADDLE_Y][curr_end_x] = ' '
+			obj_board.grid[PADDLE_Y][curr_end_x-1] = ' '
+			obj_board.grid[PADDLE_Y][curr_end_x-2] = ' '
 			obj_board.grid[PADDLE_Y][curr_start_x-1] = 'P'
 			obj_board.grid[PADDLE_Y][curr_start_x-2] = 'P'
-			obj_paddle.update(curr_start_x-2, curr_end_x-2)
-			if obj_balls[0].paddleStick:
-				obj_board.grid[obj_ball.y][obj_balls[0].x] = ' '
-				obj_board.grid[PADDLE_Y - 1][obj_balls[0].x-2] = 'O'
-				obj_balls[0].update_position(obj_ball.x-2, PADDLE_Y - 1)
+			obj_board.grid[PADDLE_Y][curr_start_x-3] = 'P'
+			obj_paddle.update(curr_start_x-3, curr_end_x-3)
+			for ball in obj_balls:
+				if ball.paddleStick:
+					obj_board.grid[ball.y][ball.x] = ' '
+					obj_board.grid[PADDLE_Y - 1][ball.x-3] = 'O'
+					ball.update_position(ball.x-3, PADDLE_Y - 1)
 		else:
 			obj_paddle.update(curr_start_x, curr_end_x)
 
 def move_powerups():
 	for powerup in obj_powerups:
-		obj_board.grid[powerup.y][powerup.x] = powerup.cover
-		if powerup.y+1 >= HT:
+		if powerup.y+1 >= HT-1:
+			powerup.timestamp()
+			# original_stdout = sys.stdout
+			# with open('logs.txt', 'a') as f:
+			# 	sys.stdout = f
+			# 	print("DROPPED", obj_powerups[i].power, obj_powerups[i].y, datetime.datetime.utcnow())
+			# 	sys.stdout = original_stdout
 			obj_powerups.remove(powerup)
 		elif obj_board.grid[powerup.y+1][powerup.x]=="P":
+			obj_board.grid[powerup.y][powerup.x] = powerup.cover
+			powerup.timestamp()
 			active_powerups.append(powerup)
-			obj_powerups.remove(powerup)
 			if powerup.power == "d":
 				num_balls = len(obj_balls)
 				activate_power("d", num_balls)
 			else:
 				activate_power(powerup.power)
-				
+			# original_stdout = sys.stdout
+			# with open('logs.txt', 'a') as f:
+			# 	sys.stdout = f
+			# 	print("PADDLE", obj_powerups[i].power, obj_powerups[i].y)
+			# 	sys.stdout = original_stdout
+			obj_powerups.remove(powerup)	
 		else:
+			obj_board.grid[powerup.y][powerup.x] = powerup.cover
+			gridValue = obj_board.grid[powerup.y+1][powerup.x]
 			if obj_board.grid[powerup.y+1][powerup.x] == "O":
 				gridValue = ' '
-			else:
-				gridValue = obj_board.grid[powerup.y+1][powerup.x]
 			obj_board.grid[powerup.y+1][powerup.x] = powerup.power
 			powerup.add_power(powerup.power, gridValue)
 			powerup.update_position(powerup.x, powerup.y+1)
+			# original_stdout = sys.stdout
+			# with open('logs.txt', 'a') as f:
+			# 	sys.stdout = f
+			# 	print("FALLING", obj_powerups[i].power, obj_powerups[i].y, datetime.datetime.utcnow())
+			# 	sys.stdout = original_stdout
+
+	len_powerups = len(obj_powerups)
+
+	original_stdout = sys.stdout
+	with open('logs.txt', 'a') as f:
+		sys.stdout = f
+		if len_powerups > 0:
+			print("POWERUPS: ")
+			for powerup in obj_powerups:
+				print(powerup.power, powerup.x, powerup.y, datetime.datetime.utcnow())
+			print("------")
+		sys.stdout = original_stdout
 
 
 def paint_level():
