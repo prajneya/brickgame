@@ -29,6 +29,11 @@ def move_balls():
 						else:
 							obj_balls.remove(ball)
 							if(len(obj_balls)==0):
+								variables.LIVES -= 1
+								lose_powerups()
+								addBall()
+
+							if(variables.LIVES==0):
 								variables.GAME_START = False
 								os.system('clear')
 								print("\033[0;0H")
@@ -55,13 +60,6 @@ def move_balls():
 				if SafeOrNot(ball.x + variables.VELOCITY_FACTOR*ball.vel_x, ball.y - variables.VELOCITY_FACTOR*ball.vel_y):
 					obj_board.grid[ball.y - variables.VELOCITY_FACTOR*ball.vel_y][ball.x + variables.VELOCITY_FACTOR*ball.vel_x] = 'O'
 					ball.update_position(ball.x + variables.VELOCITY_FACTOR*ball.vel_x, ball.y - variables.VELOCITY_FACTOR*ball.vel_y)
-				else:
-					obj_balls.remove(ball)
-					if(len(obj_balls)==0):
-						variables.GAME_START = False
-						os.system('clear')
-						print("\033[0;0H")
-						print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"GAME OVER!".center(SCREEN)+Style.RESET_ALL)
 
 def move_paddle(char):
 
@@ -105,6 +103,7 @@ def move_paddle(char):
 def move_powerups():
 	for powerup in obj_powerups:
 		if powerup.y+1 >= HT-1:
+			obj_board.grid[powerup.y][powerup.x] = powerup.cover
 			powerup.timestamp()
 			# original_stdout = sys.stdout
 			# with open('logs.txt', 'a') as f:
@@ -135,11 +134,6 @@ def move_powerups():
 			obj_board.grid[powerup.y+1][powerup.x] = powerup.power
 			powerup.add_power(powerup.power, gridValue)
 			powerup.update_position(powerup.x, powerup.y+1)
-			# original_stdout = sys.stdout
-			# with open('logs.txt', 'a') as f:
-			# 	sys.stdout = f
-			# 	print("FALLING", obj_powerups[i].power, obj_powerups[i].y, datetime.datetime.utcnow())
-			# 	sys.stdout = original_stdout
 
 	len_powerups = len(obj_powerups)
 
@@ -186,4 +180,5 @@ def paint_level():
 		obj_board.grid[PADDLE_Y][i] = 'P'
 
 	variables.GAME_START = True
+	addBall()
 	obj_board.print_board(0)

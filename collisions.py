@@ -4,9 +4,11 @@ def ball_brick_collision(obj_ball, obj_board, next_y, next_x):
 
 	if obj_ball.hulk:
 		obj_board.update_board_brick(next_y, next_x, obj_board.grid[next_y][next_x], ' ')
+		variables.SCORE += 10
 		generate_powerup(next_x, next_y+1)
 	elif obj_board.grid[next_y][next_x] == 1:
 		obj_board.update_board_brick(next_y, next_x, 1, ' ')
+		variables.SCORE += 10
 		generate_powerup(next_x, next_y+1)
 	elif obj_board.grid[next_y][next_x] == 2:
 		obj_board.update_board_brick(next_y, next_x, 2, 1)

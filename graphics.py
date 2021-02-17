@@ -26,6 +26,7 @@ def take_input():
 	char=INPUT_CHAR
 
 	if char == 'p' and variables.LANDING:
+		variables.START_TIME = datetime.datetime.utcnow()
 		print("\033[0;0H")
 		variables.LANDING = False
 		paint_level()
