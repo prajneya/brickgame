@@ -1,5 +1,7 @@
 from colorama import init, Fore, Back, Style, Cursor
 from variables import *
+import sys
+import datetime
 
 class Board:
 
@@ -35,7 +37,13 @@ class Board:
         while(hit_coordinate > start_coordinate+BRICK_WIDTH):
             start_coordinate+=BRICK_WIDTH
 
-        for k in range(start_coordinate, start_coordinate+BRICK_WIDTH+1):
+        original_stdout = sys.stdout
+        with open('logs.txt', 'a') as f:
+            sys.stdout = f
+            print("UPDATING BRICKS!", start_coordinate, start_coordinate+BRICK_WIDTH, datetime.datetime.utcnow())
+            sys.stdout = original_stdout
+
+        for k in range(start_coordinate, start_coordinate+BRICK_WIDTH):
             self.grid[i][k] = gridValue
 
     def explode_bricks(self):

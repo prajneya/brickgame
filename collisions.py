@@ -22,7 +22,6 @@ def ball_brick_collision(obj_ball, obj_board, next_y, next_x):
 	obj_ball.update_position(next_x, next_y-obj_ball.vel_y)
 
 def explosive_collision(obj_ball, obj_board, next_y, next_x):
-	obj_board.update_board_brick(next_y, next_x, obj_board.grid[next_y][next_x], ' ')
 
 	start_coordinate = variables.EXPLOSION_START_X
 	end_coordinate = variables.EXPLOSION_END_X
