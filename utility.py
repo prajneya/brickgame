@@ -17,6 +17,11 @@ def move_balls():
 						collided = True
 						break
 
+					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 7:
+						explosive_collision(ball, obj_board, ball.y - velocity*ball.vel_y, ball.x + velocity*ball.vel_x)
+						collided = True
+						break
+
 					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == '#':
 						if ball.y - velocity*ball.vel_y == 0:
 							ball_topwall_collision(ball, obj_board)
@@ -148,7 +153,7 @@ def move_powerups():
 def paint_level():
 	
 	# Set All Bricks in Position
-	for y in range(8, 8+BRICK_RANGE):
+	for y in range(7, 7+BRICK_RANGE):
 		j = 60 - 3*(y%BRICK_RANGE)
 		num_bricks = 10 + y%BRICK_RANGE
 		for i in range(num_bricks):
@@ -170,6 +175,14 @@ def paint_level():
 				for k in range(j, j+BRICK_WIDTH):
 					obj_board.grid[y][k] = 10
 			j += BRICK_WIDTH
+
+	# Set Exploding Bricks
+	j = 75
+	for l in range(6):
+		b = Explosive(j, 18)
+		for k in range(j, j+BRICK_WIDTH):
+			obj_board.grid[18][k] = 7
+		j += BRICK_WIDTH
 	
 
 	# Set Paddle in Position

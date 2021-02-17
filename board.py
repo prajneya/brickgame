@@ -38,6 +38,10 @@ class Board:
         for k in range(start_coordinate, start_coordinate+BRICK_WIDTH+1):
             self.grid[i][k] = gridValue
 
+    def explode_bricks(self):
+        for k in range(EXPLOSION_START_X, EXPLOSION_END_X+1):
+            self.grid[EXPLOSION_Y][k] = ' '
+
     def checkBricks(self):
         intact = False
         for i in range(self.__rows):
@@ -60,6 +64,8 @@ class Board:
                         print(Back.BLUE + " " + Back.RESET,end='')
                     elif self.grid[i][j] == 3:
                         print(Back.RED + " " + Back.RESET,end='') 
+                    elif self.grid[i][j] == 7:
+                        print(Back.GREEN + " " + Back.RESET,end='') 
                     elif self.grid[i][j] == 10:
                         print(Back.BLACK + " " + Back.RESET,end='') 
                     elif self.grid[i][j] == 'P':

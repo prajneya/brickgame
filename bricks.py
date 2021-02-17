@@ -21,3 +21,7 @@ class StrengthThree(Brick):
 class Unbreakable(Brick):
 	def __init__(self, x, y):
 		Brick.__init__(self, x, y, 10)
+
+class Explosive(Brick):
+	def __init__(self, x, y):
+		Brick.__init__(self, x, y, 7)
