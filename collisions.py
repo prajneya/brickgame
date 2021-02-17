@@ -54,6 +54,8 @@ def explosive_collision(obj_ball, obj_board, next_y, next_x):
 		if obj_board.grid[next_y][next_x+1] == 1 or obj_board.grid[next_y][next_x+1] == 2 or obj_board.grid[next_y][next_x+1] == 3:
 			obj_board.update_board_brick(next_y, x+1, obj_board.grid[next_y-1][x], ' ')
 
+	generate_powerup(next_x, next_y+1)
+
 def ball_topwall_collision(obj_ball, obj_board):
 	obj_ball.update_velocity(obj_ball.vel_x, -1 * obj_ball.vel_y)
 	obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] = 'O'
