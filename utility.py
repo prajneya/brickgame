@@ -34,10 +34,7 @@ def move_balls():
 								addBall()
 
 							if(variables.LIVES==0):
-								variables.GAME_START = False
-								os.system('clear')
-								print("\033[0;0H")
-								print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"GAME OVER!".center(SCREEN)+Style.RESET_ALL)
+								variables.GAME_OVER = True
 							break
 
 					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 'P':

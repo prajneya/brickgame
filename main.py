@@ -41,6 +41,19 @@ while True:
 		move_balls()
 		move_powerups()
 
+		if obj_board.checkBricks()==False:
+			os.system('clear')
+			print("\033[0;0H")
+			paint_win_screen()
+			variables.GAME_START = False
+
+		if variables.GAME_OVER:
+			os.system('clear')
+			print("\033[0;0H")
+			paint_lose_screen()
+			variables.GAME_START = False
+			quit()
+
 	without_duplicates = []
 	for powerup in obj_powerups:
 		if powerup not in without_duplicates:

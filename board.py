@@ -38,6 +38,15 @@ class Board:
         for k in range(start_coordinate, start_coordinate+BRICK_WIDTH+1):
             self.grid[i][k] = gridValue
 
+    def checkBricks(self):
+        intact = False
+        for i in range(self.__rows):
+            for j in range (0, SCREEN):
+                if self.grid[i][j] == 1 or self.grid[i][j] == 2 or self.grid[i][j] == 3:
+                    intact = True
+
+        return intact
+
 
     #function to print the playing board
     def print_board(self, factor):
