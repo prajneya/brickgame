@@ -50,9 +50,10 @@ def activate_power(power, num_balls = 0):
 		obj_board.grid[PADDLE_Y][obj_paddle.end_x+1] = 'P'
 		obj_paddle.update(obj_paddle.start_x-1, obj_paddle.end_x+1)
 	elif power == "s":
-		obj_board.grid[PADDLE_Y][obj_paddle.start_x] = ' '
-		obj_board.grid[PADDLE_Y][obj_paddle.end_x] = ' '
-		obj_paddle.update(obj_paddle.start_x+1, obj_paddle.end_x-1)
+		if obj_paddle.start_x - obj_paddle.end_x >= 18:
+			obj_board.grid[PADDLE_Y][obj_paddle.start_x] = ' '
+			obj_board.grid[PADDLE_Y][obj_paddle.end_x] = ' '
+			obj_paddle.update(obj_paddle.start_x+1, obj_paddle.end_x-1)
 	elif power == "c":
 		obj_balls[0].paddleStick = True
 		obj_balls[0].vel_y = 1

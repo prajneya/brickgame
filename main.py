@@ -16,8 +16,6 @@ while True:
 
 	if variables.GAME_START:
 		print("\033[0;0H")
-		obj_board.print_board(0)
-		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
 		print(Fore.RED+Style.BRIGHT+"LIVES REMAINING ❤️   "+str(variables.LIVES)+Style.RESET_ALL)
 		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"SCORE 🤑   "+str(variables.SCORE)+Style.RESET_ALL)
 		print(Fore.GREEN+Style.BRIGHT+"TIME PLAYED 🕒   "+str(TIME_PLAYED)+Style.RESET_ALL)
@@ -34,6 +32,12 @@ while True:
 				print(Fore.LIGHTMAGENTA_EX+Style.BRIGHT+"SPEED BALL ACTIVATED 🚄              "+Style.RESET_ALL)
 			elif powerup.power == "t":
 				print(Fore.LIGHTMAGENTA_EX+Style.BRIGHT+"THRU BALL ACTIVATED 🤢              "+Style.RESET_ALL)
+
+		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
+		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
+
+		obj_board.print_board(0)
 		move_balls()
 		move_powerups()
 
