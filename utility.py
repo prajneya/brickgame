@@ -119,9 +119,9 @@ def move_powerups():
 			active_powerups.append(powerup)
 			if powerup.power == "d":
 				num_balls = len(obj_balls)
-				activate_power("d", num_balls)
+				activate_power("d", num_balls) # Polymorphism Example
 			else:
-				activate_power(powerup.power)
+				activate_power(powerup.power) # Polymorphism Example
 			# original_stdout = sys.stdout
 			# with open('logs.txt', 'a') as f:
 			# 	sys.stdout = f
