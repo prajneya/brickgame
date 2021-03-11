@@ -2,6 +2,7 @@ from colorama import init, Fore, Back, Style, Cursor
 from variables import *
 import sys
 import datetime
+import random
 
 class Board:
 
@@ -64,6 +65,7 @@ class Board:
     #function to print the playing board
     def print_board(self, factor):
             for i in range(self.__rows):
+                temp_strength = random.randint(1, 3)
                 for j in range (factor, SCREEN+factor):
                     
                     # print(Back.LIGHTBLACK_EX +self.grid[i][j] + Back.RESET, end='')
@@ -74,7 +76,14 @@ class Board:
                     elif self.grid[i][j] == 3:
                         print(Back.RED + " " + Back.RESET,end='') 
                     elif self.grid[i][j] == 7:
-                        print(Back.GREEN + " " + Back.RESET,end='') 
+                        print(Back.GREEN + " " + Back.RESET,end='')
+                    elif self.grid[i][j] == 9:
+                        if temp_strength == 1:
+                            print(Back.YELLOW + " " + Back.RESET,end='')
+                        elif temp_strength == 2:
+                            print(Back.BLUE + " " + Back.RESET,end='')
+                        elif temp_strength == 3:
+                            print(Back.RED + " " + Back.RESET,end='') 
                     elif self.grid[i][j] == 10:
                         print(Back.BLACK + " " + Back.RESET,end='') 
                     elif self.grid[i][j] == 'P':

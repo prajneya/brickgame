@@ -16,6 +16,8 @@ def ball_brick_collision(obj_ball, obj_board, next_y, next_x):
 		obj_board.update_board_brick(next_y, next_x, 2, 1)
 	elif obj_board.grid[next_y][next_x] == 3:
 		obj_board.update_board_brick(next_y, next_x, 3, 2)
+	elif obj_board.grid[next_y][next_x] == 9:
+		obj_board.update_board_brick(next_y, next_x, 9, 2)
 
 	obj_ball.update_velocity(obj_ball.vel_x, -1 * obj_ball.vel_y)
 	obj_board.grid[next_y-obj_ball.vel_y][next_x] = 'O'

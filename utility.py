@@ -12,7 +12,7 @@ def move_balls():
 			for velocity in range(1, variables.VELOCITY_FACTOR+1):
 				obj_board.grid[ball.y][ball.x] = ' '
 				if SafeOrNot(ball.x + velocity*ball.vel_x, ball.y - velocity*ball.vel_y):
-					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 1 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 2 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 3 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 10:
+					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 1 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 2 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 3 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 9 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 10:
 						ball_brick_collision(ball, obj_board, ball.y - velocity*ball.vel_y, ball.x + velocity*ball.vel_x)
 						collided = True
 						break
@@ -157,7 +157,7 @@ def time_attack():
 	if time_spent.total_seconds() > 10 and variables.FRAME_COUNT%variables.FRAME_RATE==0:
 		for i in range(HT-1, -1, -1):
 			for j in range(WIDTH-1, -1, -1):
-				if obj_board.grid[i][j] == 1 or obj_board.grid[i][j] == 2 or obj_board.grid[i][j] == 3 or obj_board.grid[i][j] == 7 or obj_board.grid[i][j] == 10:
+				if obj_board.grid[i][j] == 1 or obj_board.grid[i][j] == 2 or obj_board.grid[i][j] == 3 or obj_board.grid[i][j] == 7 or obj_board.grid[i][j] == 9 or obj_board.grid[i][j] == 10:
 					if i+1 == PADDLE_Y:
 						variables.GAME_OVER = True
 						break
@@ -180,7 +180,7 @@ def paint_level(level):
 			j = 60 - 3*(y%BRICK_RANGE)
 			num_bricks = 10 + y%BRICK_RANGE
 			for i in range(num_bricks):
-				strength = random.randint(1, 4)
+				strength = random.randint(1, 5)
 				if strength == 1:
 					b = StrengthOne(j, y)
 					for k in range(j, j+BRICK_WIDTH):
@@ -189,14 +189,18 @@ def paint_level(level):
 					b = StrengthTwo(j, y)
 					for k in range(j, j+BRICK_WIDTH):
 						obj_board.grid[y][k] = 2
-				if strength == 3:
+				elif strength == 3:
 					b = StrengthThree(j, y)
 					for k in range(j, j+BRICK_WIDTH):
 						obj_board.grid[y][k] = 3
-				if strength == 4:
+				elif strength == 4:
 					b = Unbreakable(j, y)
 					for k in range(j, j+BRICK_WIDTH):
 						obj_board.grid[y][k] = 10
+				elif strength == 5:
+					b = Rainbow(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 9
 				j += BRICK_WIDTH
 
 		# Set Exploding Bricks
@@ -206,7 +210,7 @@ def paint_level(level):
 			for k in range(j, j+BRICK_WIDTH):
 				obj_board.grid[18][k] = 7
 			j += BRICK_WIDTH
-		
+
 	elif level == 2:
 	
 		# Set All Bricks in Position

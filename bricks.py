@@ -22,6 +22,10 @@ class Unbreakable(Brick):
 	def __init__(self, x, y):
 		Brick.__init__(self, x, y, 10)
 
+class Rainbow(Brick):
+	def __init__(self, x, y):
+		Brick.__init__(self, x, y, 9)
+
 class Explosive(Brick):
 	def __init__(self, x, y):
 		Brick.__init__(self, x, y, 7)
