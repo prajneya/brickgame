@@ -149,6 +149,22 @@ def move_powerups():
 			print("------")
 		sys.stdout = original_stdout
 
+def time_attack():
+	time_spent = datetime.datetime.utcnow() - variables.LEVEL_START_TIME
+
+	variables.FRAME_COUNT += 1
+
+	if time_spent.total_seconds() > 10 and variables.FRAME_COUNT%variables.FRAME_RATE==0:
+		for i in range(HT-1, -1, -1):
+			for j in range(WIDTH-1, -1, -1):
+				if obj_board.grid[i][j] == 1 or obj_board.grid[i][j] == 2 or obj_board.grid[i][j] == 3 or obj_board.grid[i][j] == 7 or obj_board.grid[i][j] == 10:
+					if i+1 == PADDLE_Y:
+						variables.GAME_OVER = True
+						break
+					else:
+						obj_board.grid[i+1][j] = obj_board.grid[i][j]
+						obj_board.grid[i][j] = " "
+
 
 def paint_level(level):
 
@@ -182,6 +198,15 @@ def paint_level(level):
 					for k in range(j, j+BRICK_WIDTH):
 						obj_board.grid[y][k] = 10
 				j += BRICK_WIDTH
+
+		# Set Exploding Bricks
+		j = 75
+		for l in range(6):
+			b = Explosive(j, 18)
+			for k in range(j, j+BRICK_WIDTH):
+				obj_board.grid[18][k] = 7
+			j += BRICK_WIDTH
+		
 	elif level == 2:
 	
 		# Set All Bricks in Position
@@ -237,14 +262,6 @@ def paint_level(level):
 					for k in range(j, j+BRICK_WIDTH):
 						obj_board.grid[y][k] = 10
 				j += BRICK_WIDTH
-
-	# Set Exploding Bricks
-	j = 75
-	for l in range(6):
-		b = Explosive(j, 18)
-		for k in range(j, j+BRICK_WIDTH):
-			obj_board.grid[18][k] = 7
-		j += BRICK_WIDTH
 	
 
 	# Set Paddle in Position

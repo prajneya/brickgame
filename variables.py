@@ -29,11 +29,16 @@ DOUBLE_BALLS = False
 
 LIVES = 3
 SCORE = 0
+
 START_TIME = datetime.datetime.utcnow()
+LEVEL_START_TIME = datetime.datetime.utcnow()
 
 LEVEL = 1
 
 GAME_OVER = False
+
+FRAME_RATE = 30
+FRAME_COUNT = 0
 
 def SafeOrNot(x, y):
 	if x >= 0 and x <= WIDTH-1 and y >= 0 and y <= HT-1:

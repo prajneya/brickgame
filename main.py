@@ -41,8 +41,10 @@ while True:
 		obj_board.print_board(0)
 		move_balls()
 		move_powerups()
+		time_attack()
 
 		if variables.LEVEL == 3 and obj_board.checkBricks()==False:
+			lose_powerups()
 			os.system('clear')
 			print("\033[0;0H")
 			paint_win_screen()
@@ -50,6 +52,7 @@ while True:
 			quit()
 
 		elif obj_board.checkBricks()==False:
+			lose_powerups()
 			os.system('clear')
 			print("\033[0;0H")
 			variables.LEVEL += 1

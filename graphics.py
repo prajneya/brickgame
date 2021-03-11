@@ -27,7 +27,7 @@ def take_input():
 
 	if char == 'p' and variables.LANDING:
 		variables.GAME_START = True
-		variables.START_TIME = datetime.datetime.utcnow()
+		variables.LEVEL_START_TIME = datetime.datetime.utcnow()
 		print("\033[0;0H")
 		variables.LANDING = False
 		paint_level(variables.LEVEL)
