@@ -16,6 +16,7 @@ class Board:
 
     #function to create the playing board
     def create_board(self):
+        self.grid=[]
         for i in range(self.__rows):
             self.temp=[]
             for j in range(self.__cols):
@@ -54,7 +55,7 @@ class Board:
         intact = False
         for i in range(self.__rows):
             for j in range (0, SCREEN):
-                if self.grid[i][j] == 1 or self.grid[i][j] == 2 or self.grid[i][j] == 3:
+                if self.grid[i][j] == 1 or self.grid[i][j] == 2 or self.grid[i][j] == 3 or self.grid[i][j] == 7:
                     intact = True
 
         return intact

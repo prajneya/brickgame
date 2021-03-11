@@ -26,15 +26,31 @@ def take_input():
 	char=INPUT_CHAR
 
 	if char == 'p' and variables.LANDING:
+		variables.GAME_START = True
 		variables.START_TIME = datetime.datetime.utcnow()
 		print("\033[0;0H")
 		variables.LANDING = False
-		paint_level()
+		paint_level(variables.LEVEL)
 	elif char == 'q':
 		variables.GAME_START = False
 		variables.LANDING = True
 		paint_lose_screen()
 		quit()
+	elif char == 'y':
+		os.system('clear')
+		print("\033[0;0H")
+		variables.LEVEL += 1
+		variables.LANDING = True
+		paint_level_cleared_screen()
+		variables.GAME_START = False
+
+		if variables.LEVEL == 4:
+			os.system('clear')
+			print("\033[0;0H")
+			paint_lose_screen()
+			variables.GAME_START = False
+			quit()
+
 	elif char == ' ' and variables.GAME_START:
 		for ball in obj_balls:
 			ball.paddleStick = False
@@ -84,6 +100,49 @@ def paint_landing_screen():
 		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
 		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
 		print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+
+def paint_level_cleared_screen():
+	print("\033[0;0H")
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "                                                                                                               ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "                                                                                                               ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + " _    _      _                            _          _____      _      _    _____                _             ".center(SCREEN))
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "| |  | |    | |                          | |        | ___ \    (_)    | |  | ___ \              | |            ".center(SCREEN))
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "| |  | | ___| | ___ ___  _ __ ___   ___  | |_ ___   | |_/ /_ __ _  ___| | _| |_/ /_ __ ___  __ _| | _____ _ __ ".center(SCREEN))
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "| |/\| |/ _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \  | ___ \ '__| |/ __| |/ / ___ \ '__/ _ \/ _` | |/ / _ \ '__|".center(SCREEN))
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "\  /\  /  __/ | (_| (_) | | | | | |  __/ | || (_) | | |_/ / |  | | (__|   <| |_/ / | |  __/ (_| |   <  __/ |   ".center(SCREEN))
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + " \/  \/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/  \____/|_|  |_|\___|_|\_\____/|_|  \___|\__,_|_|\_\___|_|   ".center(SCREEN))
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "                                                                                                               ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "                                                                                                               ".center(SCREEN)+Style.RESET_ALL)
+	
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+
+	print(Fore.RED + Style.BRIGHT+ Back.WHITE + " PRESS P TO CONTINUE ".center(SCREEN)+Style.RESET_ALL)
+
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+
+	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + " LEVEL CLEARED ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
+	print(Fore.BLACK + Style.BRIGHT+ Back.WHITE + "                        ".center(SCREEN)+Style.RESET_ALL)
 
 def paint_win_screen():
 	print("\033[0;0H")

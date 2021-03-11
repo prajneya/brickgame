@@ -10,8 +10,6 @@ GAME_START = False
 obj_board = Board(HT, WIDTH)
 obj_paddle = Paddle(PADDLE_START, PADDLE_END)
 
-obj_board.create_board()
-
 obj_powerups = []
 obj_balls = []
 
@@ -19,6 +17,7 @@ active_powerups = []
 
 # Generate Initial Random Position for Ball
 def addBall():
+
 	ball_pos = random.randint(0, 2)
 
 	if ball_pos == 0:
@@ -32,3 +31,9 @@ def addBall():
 		obj_board.grid[PADDLE_Y-1][obj_paddle.start_x+17] = 'O'
 
 	obj_balls.append(obj_ball)
+
+	original_stdout = sys.stdout
+	with open('logs.txt', 'a') as f:
+		sys.stdout = f
+		print("BALLS", obj_balls, datetime.datetime.utcnow())
+		sys.stdout = original_stdout

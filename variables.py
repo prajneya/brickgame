@@ -31,6 +31,8 @@ LIVES = 3
 SCORE = 0
 START_TIME = datetime.datetime.utcnow()
 
+LEVEL = 1
+
 GAME_OVER = False
 
 def SafeOrNot(x, y):

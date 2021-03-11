@@ -150,31 +150,93 @@ def move_powerups():
 		sys.stdout = original_stdout
 
 
-def paint_level():
+def paint_level(level):
+
+	obj_balls.clear()
+	obj_powerups.clear()
+	active_powerups.clear()
+	obj_board.create_board()
+
+	if level == 1:
 	
-	# Set All Bricks in Position
-	for y in range(7, 7+BRICK_RANGE):
-		j = 60 - 3*(y%BRICK_RANGE)
-		num_bricks = 10 + y%BRICK_RANGE
-		for i in range(num_bricks):
-			strength = random.randint(1, 4)
-			if strength == 1:
-				b = StrengthOne(j, y)
-				for k in range(j, j+BRICK_WIDTH):
-					obj_board.grid[y][k] = 1
-			elif strength == 2:
-				b = StrengthTwo(j, y)
-				for k in range(j, j+BRICK_WIDTH):
-					obj_board.grid[y][k] = 2
-			if strength == 3:
-				b = StrengthThree(j, y)
-				for k in range(j, j+BRICK_WIDTH):
-					obj_board.grid[y][k] = 3
-			if strength == 4:
-				b = Unbreakable(j, y)
-				for k in range(j, j+BRICK_WIDTH):
-					obj_board.grid[y][k] = 10
-			j += BRICK_WIDTH
+		# Set All Bricks in Position
+		for y in range(7, 7+BRICK_RANGE):
+			j = 60 - 3*(y%BRICK_RANGE)
+			num_bricks = 10 + y%BRICK_RANGE
+			for i in range(num_bricks):
+				strength = random.randint(1, 4)
+				if strength == 1:
+					b = StrengthOne(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 1
+				elif strength == 2:
+					b = StrengthTwo(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 2
+				if strength == 3:
+					b = StrengthThree(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 3
+				if strength == 4:
+					b = Unbreakable(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 10
+				j += BRICK_WIDTH
+	elif level == 2:
+	
+		# Set All Bricks in Position
+		for y in range(7, 7+BRICK_RANGE):
+			if y%2 == 0:
+				continue
+			j = 60 - 3*(y%BRICK_RANGE)
+			num_bricks = 10 + y%BRICK_RANGE
+			for i in range(num_bricks):
+				strength = random.randint(1, 4)
+				if strength == 1:
+					b = StrengthOne(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 1
+				elif strength == 2:
+					b = StrengthTwo(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 2
+				if strength == 3:
+					b = StrengthThree(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 3
+				if strength == 4:
+					b = Unbreakable(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 10
+				j += BRICK_WIDTH
+
+	elif level == 3:
+	
+		# Set All Bricks in Position
+		for y in range(7, 7+BRICK_RANGE):
+			if y%3 == 0 or y%3 == 1:
+				continue
+			j = 60 - 3*(y%BRICK_RANGE)
+			num_bricks = 10 + y%BRICK_RANGE
+			for i in range(num_bricks):
+				strength = random.randint(1, 4)
+				if strength == 1:
+					b = StrengthOne(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 1
+				elif strength == 2:
+					b = StrengthTwo(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 2
+				if strength == 3:
+					b = StrengthThree(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 3
+				if strength == 4:
+					b = Unbreakable(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 10
+				j += BRICK_WIDTH
 
 	# Set Exploding Bricks
 	j = 75
@@ -186,10 +248,9 @@ def paint_level():
 	
 
 	# Set Paddle in Position
-	for i in range(PADDLE_START, PADDLE_END+1):
+	for i in range(obj_paddle.start_x, obj_paddle.end_x+1):
 		obj_board.grid[PADDLE_Y][i] = 'P'
 
-	variables.GAME_START = True
 	addBall()
 	print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
 	print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
@@ -198,3 +259,9 @@ def paint_level():
 	print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
 	print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
 	obj_board.print_board(0)
+
+	# original_stdout = sys.stdout
+	# with open('logs.txt', 'a') as f:
+	# 	sys.stdout = f
+	# 	print("BALLS UTIL", obj_balls, datetime.datetime.utcnow())
+	# 	sys.stdout = original_stdout

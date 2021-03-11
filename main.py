@@ -19,6 +19,7 @@ while True:
 		print(Fore.RED+Style.BRIGHT+"LIVES REMAINING ❤️   "+str(variables.LIVES)+Style.RESET_ALL)
 		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"SCORE 🤑   "+str(variables.SCORE)+Style.RESET_ALL)
 		print(Fore.GREEN+Style.BRIGHT+"TIME PLAYED 🕒   "+str(TIME_PLAYED)+Style.RESET_ALL)
+		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"LEVEL 🏓   "+str(variables.LEVEL)+Style.RESET_ALL)
 		# for powerup in active_powerups:
 		# 	if powerup.power == "d":
 		# 		print(Fore.LIGHTMAGENTA_EX+Style.BRIGHT+"DOUBLE BALL ACTIVATED 🧶              "+Style.RESET_ALL)
@@ -41,10 +42,19 @@ while True:
 		move_balls()
 		move_powerups()
 
-		if obj_board.checkBricks()==False:
+		if variables.LEVEL == 3 and obj_board.checkBricks()==False:
 			os.system('clear')
 			print("\033[0;0H")
 			paint_win_screen()
+			variables.GAME_START = False
+			quit()
+
+		elif obj_board.checkBricks()==False:
+			os.system('clear')
+			print("\033[0;0H")
+			variables.LEVEL += 1
+			variables.LANDING = True
+			paint_level_cleared_screen()
 			variables.GAME_START = False
 
 		if variables.GAME_OVER:
