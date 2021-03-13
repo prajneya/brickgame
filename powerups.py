@@ -5,37 +5,67 @@ import random
 
 obj_powerup = PowerUp(0, 0)
 
-def generate_powerup(x, y):
+def generate_powerup(x, y, direction, tbone):
 	pno = random.randint(1, 6)
 	if pno == 1:
 		obj_powerup.add_power("d", obj_board.grid[y][x])
 		obj_powerup.update_position(x, y)
 		obj_powerup.timestamp()
+		if tbone == -1:
+			tbone = 4
+		else:
+			tbone = 0
+		obj_powerup.update_momentum(tbone, direction)
 		obj_powerups.append(deepcopy(obj_powerup))
 	elif pno == 2:
 		obj_powerup.add_power("e", obj_board.grid[y][x])
 		obj_powerup.update_position(x, y)
 		obj_powerup.timestamp()
+		if tbone == -1:
+			tbone = 4
+		else:
+			tbone = 0
+		obj_powerup.update_momentum(tbone, direction)
 		obj_powerups.append(deepcopy(obj_powerup))
 	elif pno == 3:
 		obj_powerup.add_power("s", obj_board.grid[y][x])
 		obj_powerup.update_position(x, y)
 		obj_powerup.timestamp()
+		if tbone == -1:
+			tbone = 4
+		else:
+			tbone = 0
+		obj_powerup.update_momentum(tbone, direction)
 		obj_powerups.append(deepcopy(obj_powerup))
 	elif pno == 4:
 		obj_powerup.add_power("f", obj_board.grid[y][x])
 		obj_powerup.update_position(x, y)
 		obj_powerup.timestamp()
+		if tbone == -1:
+			tbone = 4
+		else:
+			tbone = 0
+		obj_powerup.update_momentum(tbone, direction)
 		obj_powerups.append(deepcopy(obj_powerup))
 	elif pno == 5:
 		obj_powerup.add_power("t", obj_board.grid[y][x])
 		obj_powerup.update_position(x, y)
 		obj_powerup.timestamp()
+		if tbone == -1:
+			tbone = 4
+		else:
+			tbone = 0
+		obj_powerup.update_momentum(tbone, direction)
 		obj_powerups.append(deepcopy(obj_powerup))
 	elif pno == 6:
 		obj_powerup.add_power("c", obj_board.grid[y][x])
 		obj_powerup.update_position(x, y)
 		obj_powerup.timestamp()
+		if tbone == -1:
+			tbone = 4
+		else:
+			tbone = 0
+		obj_powerup.update_momentum(tbone, direction)
 		obj_powerups.append(deepcopy(obj_powerup))
 
 def activate_power(power, num_balls = 0):

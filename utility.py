@@ -13,12 +13,12 @@ def move_balls():
 				obj_board.grid[ball.y][ball.x] = ' '
 				if SafeOrNot(ball.x + velocity*ball.vel_x, ball.y - velocity*ball.vel_y):
 					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 1 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 2 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 3 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 9 or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 10:
-						ball_brick_collision(ball, obj_board, ball.y - velocity*ball.vel_y, ball.x + velocity*ball.vel_x)
+						ball_brick_collision(ball, obj_board, ball.y - velocity*ball.vel_y, ball.x + velocity*ball.vel_x, ball.vel_x, ball.vel_y)
 						collided = True
 						break
 
 					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 7:
-						explosive_collision(ball, obj_board, ball.y - velocity*ball.vel_y, ball.x + velocity*ball.vel_x)
+						explosive_collision(ball, obj_board, ball.y - velocity*ball.vel_y, ball.x + velocity*ball.vel_x, ball.vel_x, ball.vel_y)
 						collided = True
 						break
 
@@ -104,38 +104,57 @@ def move_paddle(char):
 
 def move_powerups():
 	for powerup in obj_powerups:
-		if powerup.y+1 >= HT-1:
-			obj_board.grid[powerup.y][powerup.x] = powerup.cover
-			powerup.timestamp()
-			# original_stdout = sys.stdout
-			# with open('logs.txt', 'a') as f:
-			# 	sys.stdout = f
-			# 	print("DROPPED", obj_powerups[i].power, obj_powerups[i].y, datetime.datetime.utcnow())
-			# 	sys.stdout = original_stdout
-			obj_powerups.remove(powerup)
-		elif obj_board.grid[powerup.y+1][powerup.x]=="P":
-			obj_board.grid[powerup.y][powerup.x] = powerup.cover
-			powerup.timestamp()
-			active_powerups.append(powerup)
-			if powerup.power == "d":
-				num_balls = len(obj_balls)
-				activate_power("d", num_balls) # Polymorphism Example
+		if powerup.upcount > 3:
+			if powerup.y+1 >= HT-1:
+				obj_board.grid[powerup.y][powerup.x] = powerup.cover
+				powerup.timestamp()
+				# original_stdout = sys.stdout
+				# with open('logs.txt', 'a') as f:
+				# 	sys.stdout = f
+				# 	print("DROPPED", obj_powerups[i].power, obj_powerups[i].y, datetime.datetime.utcnow())
+				# 	sys.stdout = original_stdout
+				obj_powerups.remove(powerup)
+			elif obj_board.grid[powerup.y+1][powerup.x]=="P":
+				obj_board.grid[powerup.y][powerup.x] = powerup.cover
+				powerup.timestamp()
+				active_powerups.append(powerup)
+				if powerup.power == "d":
+					num_balls = len(obj_balls)
+					activate_power("d", num_balls) # Polymorphism Example
+				else:
+					activate_power(powerup.power) # Polymorphism Example
+				# original_stdout = sys.stdout
+				# with open('logs.txt', 'a') as f:
+				# 	sys.stdout = f
+				# 	print("PADDLE", obj_powerups[i].power, obj_powerups[i].y)
+				# 	sys.stdout = original_stdout
+				obj_powerups.remove(powerup)	
 			else:
-				activate_power(powerup.power) # Polymorphism Example
-			# original_stdout = sys.stdout
-			# with open('logs.txt', 'a') as f:
-			# 	sys.stdout = f
-			# 	print("PADDLE", obj_powerups[i].power, obj_powerups[i].y)
-			# 	sys.stdout = original_stdout
-			obj_powerups.remove(powerup)	
-		else:
+				if powerup.x+powerup.direction == 0 or powerup.x+powerup.direction >= WIDTH-1:
+					powerup.update_momentum(powerup.upcount, powerup.direction*-1)
+
+				obj_board.grid[powerup.y][powerup.x] = powerup.cover
+				gridValue = obj_board.grid[powerup.y+1][powerup.x+powerup.direction]
+				if obj_board.grid[powerup.y+1][powerup.x+powerup.direction] == "O":
+					gridValue = ' '
+				obj_board.grid[powerup.y+1][powerup.x+powerup.direction] = powerup.power
+				powerup.add_power(powerup.power, gridValue)
+				powerup.update_position(powerup.x, powerup.y+1)
+		else:	
+			if powerup.x+powerup.direction == 0 or powerup.x+powerup.direction >= WIDTH-1:
+				powerup.update_momentum(powerup.upcount, powerup.direction*-1)
+
 			obj_board.grid[powerup.y][powerup.x] = powerup.cover
-			gridValue = obj_board.grid[powerup.y+1][powerup.x]
-			if obj_board.grid[powerup.y+1][powerup.x] == "O":
+			gridValue = obj_board.grid[powerup.y-1][powerup.x+powerup.direction]
+			if obj_board.grid[powerup.y-1][powerup.x+powerup.direction] == "O":
 				gridValue = ' '
-			obj_board.grid[powerup.y+1][powerup.x] = powerup.power
+			obj_board.grid[powerup.y-1][powerup.x+powerup.direction] = powerup.power
 			powerup.add_power(powerup.power, gridValue)
-			powerup.update_position(powerup.x, powerup.y+1)
+			powerup.update_position(powerup.x, powerup.y-1)
+			powerup.update_momentum(powerup.upcount+1, powerup.direction)
+
+		powerup.update_position(powerup.x+powerup.direction, powerup.y)
+
 
 	len_powerups = len(obj_powerups)
 
