@@ -4,12 +4,14 @@ from paddle import *
 from bricks import *
 from powerup import *
 from bullet import *
+from boss import *
 import random
 
 GAME_START = False
 
 obj_board = Board(HT, WIDTH)
 obj_paddle = Paddle(PADDLE_START, PADDLE_END)
+ufo = Boss(obj_paddle.start_x, 5)
 
 obj_powerups = []
 obj_balls = []
@@ -17,6 +19,8 @@ obj_balls = []
 active_powerups = []
 
 obj_bullets = []
+
+obj_bombs = []
 
 # Generate Initial Random Position for Ball
 def addBall():

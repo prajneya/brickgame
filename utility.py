@@ -58,6 +58,16 @@ def move_balls():
 
 					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == " ":
 						continue
+
+					if variables.BOSS_MODE:
+						if ball.y - velocity*ball.vel_y >= ufo.y and ball.y - velocity*ball.vel_y <= ufo.y+5 and ball.x + velocity*ball.vel_x >= ufo.x+5 and ball.x + velocity*ball.vel_x <= ufo.x+17:
+							variables.SCORE += 20
+							ufo.health -= 10
+							if ball.y >= ufo.y and ball.y <= ufo.y+5:
+								ball_boss_collision(ball, False, ball.vel_x, ball.vel_y)
+							else:
+								ball_boss_collision(ball, True, ball.vel_x, ball.vel_y)
+
 			if collided == False:
 				if SafeOrNot(ball.x + variables.VELOCITY_FACTOR*ball.vel_x, ball.y - variables.VELOCITY_FACTOR*ball.vel_y):
 					obj_board.grid[ball.y - variables.VELOCITY_FACTOR*ball.vel_y][ball.x + variables.VELOCITY_FACTOR*ball.vel_x] = 'O'
@@ -92,6 +102,11 @@ def move_paddle(char):
 		else:
 			obj_paddle.update(curr_start_x, curr_end_x)
 
+		if variables.BOSS_MODE and ufo.x+30 < WIDTH-1:
+			ufo.update_position(ufo.x+3, ufo.y)
+			ufo.clear_boss(obj_board.grid)
+			ufo.print_boss(obj_board.grid)
+
 	elif char == 'a':
 		if curr_start_x-3 > 0:
 			obj_board.grid[PADDLE_Y][curr_end_x] = ' '
@@ -111,6 +126,11 @@ def move_paddle(char):
 		else:
 			obj_paddle.update(curr_start_x, curr_end_x)
 
+		if variables.BOSS_MODE and ufo.x-3 > 0:
+			ufo.update_position(ufo.x-3, ufo.y)
+			ufo.clear_boss(obj_board.grid)
+			ufo.print_boss(obj_board.grid)
+
 def move_powerups():
 	for powerup in obj_powerups:
 		if powerup.upcount > 3:
@@ -123,7 +143,7 @@ def move_powerups():
 				# 	print("DROPPED", obj_powerups[i].power, obj_powerups[i].y, datetime.datetime.utcnow())
 				# 	sys.stdout = original_stdout
 				obj_powerups.remove(powerup)
-			elif obj_board.grid[powerup.y+1][powerup.x]=="P":
+			elif obj_board.grid[powerup.y+1][powerup.x]=="P" or obj_board.grid[powerup.y+1][powerup.x]=="p":
 				obj_board.grid[powerup.y][powerup.x] = powerup.cover
 				powerup.timestamp()
 				active_powerups.append(powerup)
@@ -248,6 +268,37 @@ def time_attack():
 						obj_board.grid[i+1][j] = obj_board.grid[i][j]
 						obj_board.grid[i][j] = " "
 
+def drop_bombs():
+	if variables.BOSS_MODE:
+		time_gap = datetime.datetime.utcnow() - variables.BOMB_TIME
+		if time_gap.total_seconds() > 3:
+			variables.BOMB_TIME = datetime.datetime.utcnow()
+			obj_bomb = Bullet(obj_paddle.start_x, 10)
+			obj_bombs.append(obj_bomb)
+
+		for bomb in obj_bombs:
+			if bomb.y+1 >= HT-1:
+				obj_bombs.remove(bomb)
+				continue
+
+			if obj_board.grid[bomb.y+1][bomb.x+8] == "P" or obj_board.grid[bomb.y+1][bomb.x+8] == "p" or obj_board.grid[bomb.y+1][bomb.x+18] == "P" or obj_board.grid[bomb.y+1][bomb.x+18] == "p":
+				variables.LIVES -= 1
+				lose_powerups()
+				obj_balls = []
+				addBall()	
+
+				if(variables.LIVES==0):
+					variables.GAME_OVER = True
+					break
+
+			obj_board.grid[bomb.y][bomb.x+8] = " "
+			obj_board.grid[bomb.y+1][bomb.x+8] = "b"
+			obj_board.grid[bomb.y][bomb.x+18] = " "
+			obj_board.grid[bomb.y+1][bomb.x+18] = "b"
+
+
+
+			bomb.update_position(bomb.x, bomb.y+1)
 
 def paint_level(level):
 
@@ -357,6 +408,14 @@ def paint_level(level):
 					for k in range(j, j+BRICK_WIDTH):
 						obj_board.grid[y][k] = 9
 				j += BRICK_WIDTH
+
+	elif level == 4:
+		
+		variables.BOSS_MODE = True
+
+		# Print UFO
+		ufo.update_position(obj_paddle.start_x, 5)
+		ufo.print_boss(obj_board.grid)
 	
 
 	# Set Paddle in Position

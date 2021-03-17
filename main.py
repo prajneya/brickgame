@@ -42,8 +42,44 @@ while True:
 		# 	elif powerup.power == "t":
 		# 		print(Fore.LIGHTMAGENTA_EX+Style.BRIGHT+"THRU BALL ACTIVATED 🤢              "+Style.RESET_ALL)
 
-		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
-		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
+		if variables.BOSS_MODE:
+			print(Fore.RED+Style.BRIGHT+"UFO HEALTH BAR 😈 "+str(ufo.health)+Style.RESET_ALL)
+			if ufo.health == 100:
+				print(Back.RED+Style.BRIGHT+"                                        "+Style.RESET_ALL)
+			elif ufo.health > 90:
+				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
+				print("\033[A"+Back.RED+Style.BRIGHT+"                                    "+Style.RESET_ALL)
+			elif ufo.health > 80:
+				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
+				print("\033[A"+Back.RED+Style.BRIGHT+"                                "+Style.RESET_ALL)
+			elif ufo.health > 70:
+				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
+				print("\033[A"+Back.RED+Style.BRIGHT+"                            "+Style.RESET_ALL)
+			elif ufo.health > 60:
+				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
+				print("\033[A"+Back.RED+Style.BRIGHT+"                        "+Style.RESET_ALL)
+			elif ufo.health > 50:
+				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
+				print("\033[A"+Back.RED+Style.BRIGHT+"                    "+Style.RESET_ALL)
+			elif ufo.health > 40:
+				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
+				print("\033[A"+Back.RED+Style.BRIGHT+"                "+Style.RESET_ALL)
+			elif ufo.health > 30:
+				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
+				print("\033[A"+Back.RED+Style.BRIGHT+"            "+Style.RESET_ALL)
+			elif ufo.health > 20:
+				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
+				print("\033[A"+Back.RED+Style.BRIGHT+"        "+Style.RESET_ALL)
+			elif ufo.health > 10:
+				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
+				print("\033[A"+Back.RED+Style.BRIGHT+"    "+Style.RESET_ALL)
+			else:
+				variables.BOSS_MODE = True
+				print(Back.RED+Style.BRIGHT+"ENEMY DEFEATED".center(SCREEN)+Style.RESET_ALL)
+		else:
+			print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
+			print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
+
 		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
 
 		obj_board.print_board(0)
@@ -52,8 +88,9 @@ while True:
 		time_attack()
 		shoot_balls()
 		move_bullets()
+		drop_bombs()
 
-		if variables.LEVEL == 3 and obj_board.checkBricks()==False:
+		if variables.LEVEL == 4 and variables.BOSS_MODE==False:
 			lose_powerups()
 			os.system('clear')
 			print("\033[0;0H")
@@ -61,7 +98,7 @@ while True:
 			variables.GAME_START = False
 			quit()
 
-		elif obj_board.checkBricks()==False:
+		elif variables.LEVEL < 4 and obj_board.checkBricks()==False:
 			lose_powerups()
 			os.system('clear')
 			print("\033[0;0H")

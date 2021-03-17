@@ -109,8 +109,10 @@ class Board:
                     elif self.grid[i][j] == 'b':
                         print(Back.RED + " " + Back.RESET,end='')
                     elif self.grid[i][j] == 'O':
-                        print(Back.MAGENTA + Fore.RED + self.grid[i][j] + Back.RESET,end='')  
-                    else:
+                        print(Back.MAGENTA + Fore.RED + self.grid[i][j] + Back.RESET,end='') 
+                    elif self.grid[i][j] == ' ':
                         print(self.grid[i][j],end='')  
+                    else:
+                        print(Back.MAGENTA + Fore.RED + self.grid[i][j] + Back.RESET,end='') 
                     
                 print()

@@ -110,3 +110,9 @@ def bullet_brick_collision(obj_board, next_y, next_x):
 		obj_board.update_board_brick(next_y, next_x, 3, 2)
 	elif obj_board.grid[next_y][next_x] == 9:
 		obj_board.update_board_brick(next_y, next_x, 9, 2)
+
+def ball_boss_collision(ball, top, vel_x, vel_y):
+	if top:
+		ball.update_velocity(vel_x, -1 * vel_y)
+	else:
+		ball.update_velocity(-1*vel_x, -1 * vel_y)

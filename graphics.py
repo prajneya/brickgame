@@ -44,7 +44,7 @@ def take_input():
 		paint_level_cleared_screen()
 		variables.GAME_START = False
 
-		if variables.LEVEL == 4:
+		if variables.LEVEL == 5:
 			os.system('clear')
 			print("\033[0;0H")
 			paint_lose_screen()

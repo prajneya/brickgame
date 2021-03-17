@@ -212,7 +212,7 @@ def shoot_balls():
 			variables.SHOOT_TIME = datetime.datetime.utcnow()
 			obj_bullet = Bullet(obj_paddle.start_x, PADDLE_Y)
 			obj_bullets.append(obj_bullet)
-			original_stdout = sys.stdout
+			# original_stdout = sys.stdout
 			# with open('logs.txt', 'a') as f:
 			# 	sys.stdout = f
 			# 	print("BULLET ADDED AT", obj_bullet.x, obj_bullet.y, " AT ", datetime.datetime.utcnow())

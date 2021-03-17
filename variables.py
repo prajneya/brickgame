@@ -44,6 +44,11 @@ SHOOT = False
 SHOOT_TIME = datetime.datetime.utcnow()
 SHOOT_CREATE_TIME = datetime.datetime.utcnow()
 
+BOSS_MODE = False
+
+BOMB_TIME = datetime.datetime.utcnow()
+BOMB_CREATE_TIME = datetime.datetime.utcnow()
+
 def SafeOrNot(x, y):
 	if x >= 0 and x <= WIDTH-1 and y >= 0 and y <= HT-1:
 		return True
