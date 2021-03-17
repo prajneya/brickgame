@@ -2,6 +2,8 @@
 
 A game that can be played on the Terminal based on the classic DX-Ball Game. Built using Python3 as part of DASS Assignment 2.
 
+Update: Version 2 of the Game. Added new features as part of Assignment 3
+
 ## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install colorama.
@@ -27,6 +29,10 @@ After running the above commands on terminal, use the following controls
  - `A` to move paddle to left
  - `Q` to Quit Game
 
+ New Update:
+
+ - `Y` to skip levels
+
 ## Gameplay
 
 Bricks are of 5 types:
@@ -36,6 +42,10 @@ Bricks are of 5 types:
  - Strength Three
  - Unbreakable
  - Explosive Bricks
+
+ New Update:
+
+ - Rainbow Bricks
 
 Breaking each brick awards you with a score of 10 points. Break all the bricks (except Unbreakable) to win the game.
 
@@ -48,6 +58,12 @@ Each time a brick is destroyed, a powerup randomly appears, which can be caught 
 ![Sample gameplay](https://i.ibb.co/QQ11sHJ/Screenshot-from-2021-02-17-19-32-34.png)
 
 ![Sample gameplay](https://i.ibb.co/Zc33wCZ/Screenshot-from-2021-02-17-19-33-22.png)
+
+New Update:
+
+![Sample gameplay](https://i.ibb.co/1v1c1kc/guns.png)
+
+![Sample Gameplay](https://i.ibb.co/10qKXkt/Screenshot-from-2021-03-17-22-35-42.png)
 
 ## Required Components
 
@@ -96,3 +112,29 @@ Six PowerUps have been implemented, which appear when a brick is destroyed. Powe
 ### Bonus
 
 Exploding Bricks have been implemented. When the ball hits any one of these, a chain reaction is caused which breaks all the breakable bricks in its vicinity.
+
+New Updates:
+
+### Levels
+
+A total of 4 levels have been implemented now
+
+### Falling Bricks - Time Attack
+
+After a period of 10 seconds, bricks start falling down. You have to destroy all bricks before touchdown
+
+### Rainbow Bricks
+
+A new type of brick has been introduced, that keeps changing colour (and strength) until it is hit.
+
+### Powerups 2.0
+
+Powerups now attain the velocity of the ball and have a gravity effect
+
+### GUNS!
+
+A new powerup allows the paddle to have shooting capabilities for a limited amount of time
+
+### BOSS Enemy
+
+Last level involves the BOSS Fight, where you have to destroy a UFO to win the match. Health Bar is also displayed. Careful, the UFO can spawn bricks around itself as a defense strategy.

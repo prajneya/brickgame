@@ -271,7 +271,7 @@ def time_attack():
 def drop_bombs():
 	if variables.BOSS_MODE:
 		time_gap = datetime.datetime.utcnow() - variables.BOMB_TIME
-		if time_gap.total_seconds() > 3:
+		if time_gap.total_seconds() > 1:
 			variables.BOMB_TIME = datetime.datetime.utcnow()
 			obj_bomb = Bullet(obj_paddle.start_x, 10)
 			obj_bombs.append(obj_bomb)
