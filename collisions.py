@@ -7,11 +7,13 @@ def ball_brick_collision(obj_ball, obj_board, next_y, next_x, direction, tbone):
 	if obj_ball.hulk:
 		obj_board.update_board_brick(next_y, next_x, obj_board.grid[next_y][next_x], ' ')
 		variables.SCORE += 10
-		generate_powerup(next_x, next_y+1, direction, tbone)
+		if variables.BOSS_MODE == False:
+			generate_powerup(next_x, next_y+1, direction, tbone)
 	elif obj_board.grid[next_y][next_x] == 1:
 		obj_board.update_board_brick(next_y, next_x, 1, ' ')
 		variables.SCORE += 10
-		generate_powerup(next_x, next_y+1, direction, tbone)
+		if variables.BOSS_MODE == False:
+			generate_powerup(next_x, next_y+1, direction, tbone)
 	elif obj_board.grid[next_y][next_x] == 2:
 		obj_board.update_board_brick(next_y, next_x, 2, 1)
 	elif obj_board.grid[next_y][next_x] == 3:
@@ -55,7 +57,8 @@ def explosive_collision(obj_ball, obj_board, next_y, next_x, direction, tbone):
 		if obj_board.grid[next_y][next_x+1] == 1 or obj_board.grid[next_y][next_x+1] == 2 or obj_board.grid[next_y][next_x+1] == 3 or obj_board.grid[next_y-1][x] == 10:
 			obj_board.update_board_brick(next_y, x+1, obj_board.grid[next_y-1][x], ' ')
 
-	generate_powerup(next_x, next_y+1, direction, tbone)
+	if variabels.BOSS_MODE == False:
+		generate_powerup(next_x, next_y+1, direction, tbone)
 
 def ball_topwall_collision(obj_ball, obj_board):
 	obj_ball.update_velocity(obj_ball.vel_x, -1 * obj_ball.vel_y)

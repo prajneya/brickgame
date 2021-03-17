@@ -42,39 +42,48 @@ while True:
 		# 	elif powerup.power == "t":
 		# 		print(Fore.LIGHTMAGENTA_EX+Style.BRIGHT+"THRU BALL ACTIVATED 🤢              "+Style.RESET_ALL)
 
+		first_cocoon = False
+		second_cocoon = False
+
 		if variables.BOSS_MODE:
 			print(Fore.RED+Style.BRIGHT+"UFO HEALTH BAR 😈 "+str(ufo.health)+Style.RESET_ALL)
 			if ufo.health == 100:
 				print(Back.RED+Style.BRIGHT+"                                        "+Style.RESET_ALL)
-			elif ufo.health > 90:
+			elif ufo.health >= 90:
+				if first_cocoon == False:
+					first_cocoon = True
+					cocoon(1)
 				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
 				print("\033[A"+Back.RED+Style.BRIGHT+"                                    "+Style.RESET_ALL)
-			elif ufo.health > 80:
+			elif ufo.health >= 80:
 				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
 				print("\033[A"+Back.RED+Style.BRIGHT+"                                "+Style.RESET_ALL)
-			elif ufo.health > 70:
+			elif ufo.health >= 70:
 				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
 				print("\033[A"+Back.RED+Style.BRIGHT+"                            "+Style.RESET_ALL)
-			elif ufo.health > 60:
+			elif ufo.health >= 60:
 				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
 				print("\033[A"+Back.RED+Style.BRIGHT+"                        "+Style.RESET_ALL)
-			elif ufo.health > 50:
+			elif ufo.health >= 50:
 				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
 				print("\033[A"+Back.RED+Style.BRIGHT+"                    "+Style.RESET_ALL)
-			elif ufo.health > 40:
+			elif ufo.health >= 40:
 				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
 				print("\033[A"+Back.RED+Style.BRIGHT+"                "+Style.RESET_ALL)
-			elif ufo.health > 30:
+			elif ufo.health >= 30:
 				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
 				print("\033[A"+Back.RED+Style.BRIGHT+"            "+Style.RESET_ALL)
-			elif ufo.health > 20:
+			elif ufo.health >= 20:
+				if second_cocoon == False:
+					second_cocoon = True
+					cocoon(2)
 				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
 				print("\033[A"+Back.RED+Style.BRIGHT+"        "+Style.RESET_ALL)
-			elif ufo.health > 10:
+			elif ufo.health >= 10:
 				print(Back.WHITE+Style.BRIGHT+"                                        "+Style.RESET_ALL)
 				print("\033[A"+Back.RED+Style.BRIGHT+"    "+Style.RESET_ALL)
 			else:
-				variables.BOSS_MODE = True
+				variables.BOSS_MODE = False
 				print(Back.RED+Style.BRIGHT+"ENEMY DEFEATED".center(SCREEN)+Style.RESET_ALL)
 		else:
 			print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
@@ -85,7 +94,8 @@ while True:
 		obj_board.print_board(0)
 		move_balls()
 		move_powerups()
-		time_attack()
+		if variables.BOSS_MODE == False:
+			time_attack()
 		shoot_balls()
 		move_bullets()
 		drop_bombs()

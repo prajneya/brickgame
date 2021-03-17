@@ -291,14 +291,34 @@ def drop_bombs():
 					variables.GAME_OVER = True
 					break
 
-			obj_board.grid[bomb.y][bomb.x+8] = " "
-			obj_board.grid[bomb.y+1][bomb.x+8] = "b"
-			obj_board.grid[bomb.y][bomb.x+18] = " "
-			obj_board.grid[bomb.y+1][bomb.x+18] = "b"
-
-
+			if obj_board.grid[bomb.y][bomb.x+8] != 1 and obj_board.grid[bomb.y][bomb.x+8] != 2 and obj_board.grid[bomb.y][bomb.x+8] != 3:
+				obj_board.grid[bomb.y][bomb.x+8] = " "
+			if obj_board.grid[bomb.y+1][bomb.x+8] != 1 and obj_board.grid[bomb.y+1][bomb.x+8] != 2 and obj_board.grid[bomb.y+1][bomb.x+8] != 3:
+				obj_board.grid[bomb.y+1][bomb.x+8] = "b"
+			if obj_board.grid[bomb.y][bomb.x+18] != 1 and obj_board.grid[bomb.y][bomb.x+18] != 2 and obj_board.grid[bomb.y][bomb.x+18] != 3:
+				obj_board.grid[bomb.y][bomb.x+18] = " "
+			if obj_board.grid[bomb.y+1][bomb.x+18] != 1 and obj_board.grid[bomb.y+1][bomb.x+18] != 2 and obj_board.grid[bomb.y+1][bomb.x+18] != 3:
+				obj_board.grid[bomb.y+1][bomb.x+18] = "b"
 
 			bomb.update_position(bomb.x, bomb.y+1)
+
+def cocoon(num):
+	j = 5
+	for i in range(24):
+		strength = random.randint(1, 3)
+		if strength == 1:
+			b = StrengthOne(j, 12+num)
+			for k in range(j, j+BRICK_WIDTH):
+				obj_board.grid[12+num][k] = 1
+		elif strength == 2:
+			b = StrengthTwo(j, 12+num)
+			for k in range(j, j+BRICK_WIDTH):
+				obj_board.grid[12+num][k] = 2
+		elif strength == 3:
+			b = StrengthThree(j, 12+num)
+			for k in range(j, j+BRICK_WIDTH):
+				obj_board.grid[12+num][k] = 3
+		j += BRICK_WIDTH
 
 def paint_level(level):
 
