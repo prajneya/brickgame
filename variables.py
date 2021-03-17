@@ -40,6 +40,10 @@ GAME_OVER = False
 FRAME_RATE = 30
 FRAME_COUNT = 0
 
+SHOOT = False
+SHOOT_TIME = datetime.datetime.utcnow()
+SHOOT_CREATE_TIME = datetime.datetime.utcnow()
+
 def SafeOrNot(x, y):
 	if x >= 0 and x <= WIDTH-1 and y >= 0 and y <= HT-1:
 		return True

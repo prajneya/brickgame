@@ -91,3 +91,22 @@ def ball_paddle_right_collision(obj_ball, obj_board):
 		obj_ball.update_velocity(-1 * obj_ball.vel_x, -1 * obj_ball.vel_y)
 	obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] = 'O'
 	obj_ball.update_position(obj_ball.x+obj_ball.vel_x, obj_ball.y - obj_ball.vel_y)
+
+def bullet_brick_collision(obj_board, next_y, next_x):
+
+	original_stdout = sys.stdout
+	with open('logs.txt', 'a') as f:
+		sys.stdout = f
+		print("BULLET BRICK COLLISION", obj_board.grid[next_y][next_x], " AT ", datetime.datetime.utcnow())
+		sys.stdout = original_stdout
+
+	if obj_board.grid[next_y][next_x] == 1:
+		obj_board.update_board_brick(next_y, next_x, 1, ' ')
+		variables.SCORE += 10
+		generate_powerup(next_x, next_y+1, 0, 1)
+	elif obj_board.grid[next_y][next_x] == 2:
+		obj_board.update_board_brick(next_y, next_x, 2, 1)
+	elif obj_board.grid[next_y][next_x] == 3:
+		obj_board.update_board_brick(next_y, next_x, 3, 2)
+	elif obj_board.grid[next_y][next_x] == 9:
+		obj_board.update_board_brick(next_y, next_x, 9, 2)

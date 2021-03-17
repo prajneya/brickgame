@@ -6,7 +6,7 @@ import random
 obj_powerup = PowerUp(0, 0)
 
 def generate_powerup(x, y, direction, tbone):
-	pno = random.randint(1, 6)
+	pno = random.randint(1, 7)
 	if pno == 1:
 		obj_powerup.add_power("d", obj_board.grid[y][x])
 		obj_powerup.update_position(x, y)
@@ -67,6 +67,16 @@ def generate_powerup(x, y, direction, tbone):
 			tbone = 0
 		obj_powerup.update_momentum(tbone, direction)
 		obj_powerups.append(deepcopy(obj_powerup))
+	elif pno == 7:
+		obj_powerup.add_power("g", obj_board.grid[y][x])
+		obj_powerup.update_position(x, y)
+		obj_powerup.timestamp()
+		if tbone == -1:
+			tbone = 4
+		else:
+			tbone = 0
+		obj_powerup.update_momentum(tbone, direction)
+		obj_powerups.append(deepcopy(obj_powerup))
 
 def activate_power(power, num_balls = 0):
 	if power == "d":
@@ -97,6 +107,11 @@ def activate_power(power, num_balls = 0):
 	elif power == "t":
 		for ball in obj_balls:
 			ball.hulk = True
+	elif power == "g":
+		obj_board.grid[PADDLE_Y][obj_paddle.start_x] = 'p'
+		obj_board.grid[PADDLE_Y][obj_paddle.end_x] = 'p'
+		variables.SHOOT = True
+		variables.SHOOT_CREATE_TIME = datetime.datetime.utcnow()
 
 def lose_powerups_with_time():
 	for powerup in active_powerups:
@@ -136,6 +151,13 @@ def lose_powerups_with_time():
 						obj_board.grid[PADDLE_Y][obj_paddle.end_x] = ' '
 						current_width -= 2
 						obj_paddle.update(obj_paddle.start_x+1, obj_paddle.end_x-1)
+		elif powerup.power == "g":
+			time_spent = datetime.datetime.utcnow() - powerup.createdAt
+			if time_spent.total_seconds() > 10:
+				active_powerups.remove(powerup)
+				obj_board.grid[PADDLE_Y][obj_paddle.start_x] = 'P'
+				obj_board.grid[PADDLE_Y][obj_paddle.end_x] = 'P'
+				variables.SHOOT = False
 						
 def lose_powerups():
 	for powerup in active_powerups:
@@ -177,6 +199,21 @@ def lose_powerups():
 					flag = False
 			if flag:
 				active_powerups.remove(powerup)
+		elif powerup.power == "g":
+			active_powerups.remove(powerup)
+			obj_board.grid[PADDLE_Y][obj_paddle.start_x] = 'P'
+			obj_board.grid[PADDLE_Y][obj_paddle.end_x] = 'P'
+			variables.SHOOT = False
 
-
-
+def shoot_balls():
+	if variables.SHOOT:
+		time_gap = datetime.datetime.utcnow() - variables.SHOOT_TIME
+		if time_gap.total_seconds() > 3:
+			variables.SHOOT_TIME = datetime.datetime.utcnow()
+			obj_bullet = Bullet(obj_paddle.start_x, PADDLE_Y)
+			obj_bullets.append(obj_bullet)
+			original_stdout = sys.stdout
+			# with open('logs.txt', 'a') as f:
+			# 	sys.stdout = f
+			# 	print("BULLET ADDED AT", obj_bullet.x, obj_bullet.y, " AT ", datetime.datetime.utcnow())
+			# 	sys.stdout = original_stdout

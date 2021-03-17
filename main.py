@@ -20,6 +20,14 @@ while True:
 		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"SCORE 🤑   "+str(variables.SCORE)+Style.RESET_ALL)
 		print(Fore.GREEN+Style.BRIGHT+"TIME PLAYED 🕒   "+str(TIME_PLAYED)+Style.RESET_ALL)
 		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"LEVEL 🏓   "+str(variables.LEVEL)+Style.RESET_ALL)
+
+		if variables.SHOOT:
+				time_spent = datetime.datetime.utcnow() - variables.SHOOT_CREATE_TIME
+				print(Fore.LIGHTMAGENTA_EX+Style.BRIGHT+"SHOOTER ACTIVATED 🧶 TIME REMAINING: "+str(10-time_spent.total_seconds())+Style.RESET_ALL)
+
+		if variables.SHOOT == False:
+			print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
+
 		# for powerup in active_powerups:
 		# 	if powerup.power == "d":
 		# 		print(Fore.LIGHTMAGENTA_EX+Style.BRIGHT+"DOUBLE BALL ACTIVATED 🧶              "+Style.RESET_ALL)
@@ -42,6 +50,8 @@ while True:
 		move_balls()
 		move_powerups()
 		time_attack()
+		shoot_balls()
+		move_bullets()
 
 		if variables.LEVEL == 3 and obj_board.checkBricks()==False:
 			lose_powerups()

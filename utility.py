@@ -42,7 +42,7 @@ def move_balls():
 								variables.GAME_OVER = True
 							break
 
-					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 'P':
+					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 'P' or obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 'p':
 						if ball.x + velocity*ball.vel_x >= obj_paddle.start_x and ball.x + velocity*ball.vel_x <= obj_paddle.start_x+6:
 							ball_paddle_left_collision(ball, obj_board)
 							collided = True
@@ -68,14 +68,21 @@ def move_paddle(char):
 	curr_start_x = obj_paddle.start_x
 	curr_end_x = obj_paddle.end_x
 
+	guns = 'P'
+
+	if obj_board.grid and obj_board.grid[PADDLE_Y][curr_start_x] == 'p':
+		guns = 'p'
+
 	if char == 'd':
 		if curr_end_x+3 < WIDTH-1:
 			obj_board.grid[PADDLE_Y][curr_start_x] = ' '
 			obj_board.grid[PADDLE_Y][curr_start_x+1] = ' '
 			obj_board.grid[PADDLE_Y][curr_start_x+2] = ' '
+			obj_board.grid[PADDLE_Y][curr_start_x+3] = guns
+			obj_board.grid[PADDLE_Y][curr_end_x] = 'P'
 			obj_board.grid[PADDLE_Y][curr_end_x+1] = 'P'
 			obj_board.grid[PADDLE_Y][curr_end_x+2] = 'P'
-			obj_board.grid[PADDLE_Y][curr_end_x+3] = 'P'
+			obj_board.grid[PADDLE_Y][curr_end_x+3] = guns
 			obj_paddle.update(curr_start_x+3, curr_end_x+3)
 			for ball in obj_balls:
 				if ball.paddleStick:
@@ -90,9 +97,11 @@ def move_paddle(char):
 			obj_board.grid[PADDLE_Y][curr_end_x] = ' '
 			obj_board.grid[PADDLE_Y][curr_end_x-1] = ' '
 			obj_board.grid[PADDLE_Y][curr_end_x-2] = ' '
+			obj_board.grid[PADDLE_Y][curr_end_x-3] = guns
+			obj_board.grid[PADDLE_Y][curr_start_x] = 'P'
 			obj_board.grid[PADDLE_Y][curr_start_x-1] = 'P'
 			obj_board.grid[PADDLE_Y][curr_start_x-2] = 'P'
-			obj_board.grid[PADDLE_Y][curr_start_x-3] = 'P'
+			obj_board.grid[PADDLE_Y][curr_start_x-3] = guns
 			obj_paddle.update(curr_start_x-3, curr_end_x-3)
 			for ball in obj_balls:
 				if ball.paddleStick:
@@ -158,15 +167,70 @@ def move_powerups():
 
 	len_powerups = len(obj_powerups)
 
-	original_stdout = sys.stdout
-	with open('logs.txt', 'a') as f:
-		sys.stdout = f
-		if len_powerups > 0:
-			print("POWERUPS: ")
-			for powerup in obj_powerups:
-				print(powerup.power, powerup.x, powerup.y, datetime.datetime.utcnow())
-			print("------")
-		sys.stdout = original_stdout
+	# original_stdout = sys.stdout
+	# with open('logs.txt', 'a') as f:
+	# 	sys.stdout = f
+	# 	if len_powerups > 0:
+	# 		print("POWERUPS: ")
+	# 		for powerup in obj_powerups:
+	# 			print(powerup.power, powerup.x, powerup.y, datetime.datetime.utcnow())
+	# 		print("------")
+	# 	sys.stdout = original_stdout
+
+def move_bullets():
+	ballers = (obj_paddle.end_x - obj_paddle.start_x + 1)
+	for bullet in obj_bullets:
+		if bullet.y-1 <= 2:
+			obj_board.grid[bullet.y][bullet.x] = ' '
+			obj_board.grid[bullet.y][bullet.x+(obj_paddle.end_x - obj_paddle.start_x + 1)] = ' '
+			obj_bullets.remove(bullet)
+			continue
+		# with open('logs.txt', 'a') as f:
+		# 		sys.stdout = f
+		# 		print("MOVING BULLET TO", obj_bullet.x, obj_bullet.y-1, " AT ", datetime.datetime.utcnow())
+		# 		sys.stdout = original_stdout
+
+		bullseye = False
+		remove_bullet = False
+
+		if bullet.ammo == "dual" or bullet.ammo == "left":
+			if obj_board.grid[bullet.y-1][bullet.x] == 1 or obj_board.grid[bullet.y-1][bullet.x] == 2 or obj_board.grid[bullet.y-1][bullet.x] == 3 or obj_board.grid[bullet.y-1][bullet.x] == 9 or obj_board.grid[bullet.y-1][bullet.x] == 10:
+				bullseye = True
+				obj_board.grid[bullet.y][bullet.x] = ' '
+				bullet_brick_collision(obj_board, bullet.y-1, bullet.x)
+				if bullet.ammo == "dual":
+					bullet.reload("right")
+				else:
+					remove_bullet = True
+		if bullet.ammo == "dual" or bullet.ammo == "right":
+			if obj_board.grid[bullet.y-1][bullet.x+ballers] == 1 or obj_board.grid[bullet.y-1][bullet.x+ballers] == 2 or obj_board.grid[bullet.y-1][bullet.x+ballers] == 3 or obj_board.grid[bullet.y-1][bullet.x+ballers] == 9 or obj_board.grid[bullet.y-1][bullet.x+ballers] == 10:
+				bullseye = True
+				obj_board.grid[bullet.y][bullet.x+ballers] = ' '
+				bullet_brick_collision(obj_board, bullet.y-1, bullet.x+ballers)
+				if bullet.ammo == "dual":
+					bullet.reload("left")
+				else:
+					remove_bullet = True
+
+		if bullseye == False:
+			# if obj_board.grid[bullet.y-1][bullet.x] != 'O' and obj_board.grid[bullet.y-1][bullet.x] != 'd' and obj_board.grid[bullet.y-1][bullet.x] != 'e' and obj_board.grid[bullet.y-1][bullet.x] != 's' and obj_board.grid[bullet.y-1][bullet.x] != 'f' and obj_board.grid[bullet.y-1][bullet.x] != 't' and obj_board.grid[bullet.y-1][bullet.x] != 'g':
+			if bullet.y != PADDLE_Y:
+				if bullet.ammo == "dual":
+					obj_board.grid[bullet.y-1][bullet.x] = 'b'
+					obj_board.grid[bullet.y-1][bullet.x+ballers] = 'b'
+					obj_board.grid[bullet.y][bullet.x] = ' '
+					obj_board.grid[bullet.y][bullet.x+ballers] = ' '
+				elif bullet.ammo == "left":
+					obj_board.grid[bullet.y-1][bullet.x] = 'b'
+					obj_board.grid[bullet.y][bullet.x] = ' '
+				elif bullet.ammo == "right":
+					obj_board.grid[bullet.y-1][bullet.x+ballers] = 'b'
+					obj_board.grid[bullet.y][bullet.x+ballers] = ' '
+				
+			bullet.update_position(bullet.x, bullet.y-1)
+
+		if remove_bullet:
+			obj_bullets.remove(bullet)
 
 def time_attack():
 	time_spent = datetime.datetime.utcnow() - variables.LEVEL_START_TIME
@@ -223,12 +287,12 @@ def paint_level(level):
 				j += BRICK_WIDTH
 
 		# Set Exploding Bricks
-		j = 75
-		for l in range(6):
-			b = Explosive(j, 18)
-			for k in range(j, j+BRICK_WIDTH):
-				obj_board.grid[18][k] = 7
-			j += BRICK_WIDTH
+		# j = 75
+		# for l in range(6):
+		# 	b = Explosive(j, 18)
+		# 	for k in range(j, j+BRICK_WIDTH):
+		# 		obj_board.grid[18][k] = 7
+		# 	j += BRICK_WIDTH
 
 	elif level == 2:
 	
@@ -239,7 +303,7 @@ def paint_level(level):
 			j = 60 - 3*(y%BRICK_RANGE)
 			num_bricks = 10 + y%BRICK_RANGE
 			for i in range(num_bricks):
-				strength = random.randint(1, 4)
+				strength = random.randint(1, 5)
 				if strength == 1:
 					b = StrengthOne(j, y)
 					for k in range(j, j+BRICK_WIDTH):
@@ -256,6 +320,10 @@ def paint_level(level):
 					b = Unbreakable(j, y)
 					for k in range(j, j+BRICK_WIDTH):
 						obj_board.grid[y][k] = 10
+				elif strength == 5:
+					b = Rainbow(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 9
 				j += BRICK_WIDTH
 
 	elif level == 3:
@@ -267,7 +335,7 @@ def paint_level(level):
 			j = 60 - 3*(y%BRICK_RANGE)
 			num_bricks = 10 + y%BRICK_RANGE
 			for i in range(num_bricks):
-				strength = random.randint(1, 4)
+				strength = random.randint(1, 5)
 				if strength == 1:
 					b = StrengthOne(j, y)
 					for k in range(j, j+BRICK_WIDTH):
@@ -284,6 +352,10 @@ def paint_level(level):
 					b = Unbreakable(j, y)
 					for k in range(j, j+BRICK_WIDTH):
 						obj_board.grid[y][k] = 10
+				elif strength == 5:
+					b = Rainbow(j, y)
+					for k in range(j, j+BRICK_WIDTH):
+						obj_board.grid[y][k] = 9
 				j += BRICK_WIDTH
 	
 

@@ -3,6 +3,7 @@ from ball import *
 from paddle import *
 from bricks import *
 from powerup import *
+from bullet import *
 import random
 
 GAME_START = False
@@ -14,6 +15,8 @@ obj_powerups = []
 obj_balls = []
 
 active_powerups = []
+
+obj_bullets = []
 
 # Generate Initial Random Position for Ball
 def addBall():

@@ -88,6 +88,8 @@ class Board:
                         print(Back.BLACK + " " + Back.RESET,end='') 
                     elif self.grid[i][j] == 'P':
                         print(Back.BLACK + " " + Back.RESET,end='') 
+                    elif self.grid[i][j] == 'p':
+                        print(Back.RED + " " + Back.RESET,end='') 
                     elif self.grid[i][j] == '#':
                         print(Back.WHITE + " " + Back.RESET,end='')
                     elif self.grid[i][j] == 'd':
@@ -102,6 +104,10 @@ class Board:
                         print(Back.GREEN + "T" + Back.RESET,end='')
                     elif self.grid[i][j] == 'c':
                         print(Back.GREEN + "C" + Back.RESET,end='')
+                    elif self.grid[i][j] == 'g':
+                        print(Back.WHITE + "G" + Back.RESET,end='')
+                    elif self.grid[i][j] == 'b':
+                        print(Back.RED + " " + Back.RESET,end='')
                     elif self.grid[i][j] == 'O':
                         print(Back.MAGENTA + Fore.RED + self.grid[i][j] + Back.RESET,end='')  
                     else:
