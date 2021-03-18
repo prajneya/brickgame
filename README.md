@@ -138,3 +138,7 @@ A new powerup allows the paddle to have shooting capabilities for a limited amou
 ### BOSS Enemy
 
 Last level involves the BOSS Fight, where you have to destroy a UFO to win the match. Health Bar is also displayed. Careful, the UFO can spawn bricks around itself as a defense strategy.
+
+### Bonus
+
+Fireball Powerup: New powerup that gives the ball the ability to explode bricks it touches alongwith the bricks in its proximity

@@ -18,7 +18,9 @@ def move_balls():
 						break
 
 					if obj_board.grid[ball.y - velocity*ball.vel_y][ball.x + velocity*ball.vel_x] == 7:
+						ball.wanda = True
 						explosive_collision(ball, obj_board, ball.y - velocity*ball.vel_y, ball.x + velocity*ball.vel_x, ball.vel_x, ball.vel_y)
+						ball.wanda = False
 						collided = True
 						break
 
@@ -37,6 +39,9 @@ def move_balls():
 								variables.LIVES -= 1
 								lose_powerups()
 								addBall()
+
+								os.system('aplay -q ./sounds/lose_life.wav&')
+
 
 							if(variables.LIVES==0):
 								variables.GAME_OVER = True
@@ -144,6 +149,7 @@ def move_powerups():
 				# 	sys.stdout = original_stdout
 				obj_powerups.remove(powerup)
 			elif obj_board.grid[powerup.y+1][powerup.x]=="P" or obj_board.grid[powerup.y+1][powerup.x]=="p":
+				os.system('aplay -q ./sounds/powerup.wav&')
 				obj_board.grid[powerup.y][powerup.x] = powerup.cover
 				powerup.timestamp()
 				active_powerups.append(powerup)
@@ -282,11 +288,13 @@ def drop_bombs():
 				continue
 
 			if obj_board.grid[bomb.y+1][bomb.x+8] == "P" or obj_board.grid[bomb.y+1][bomb.x+8] == "p" or obj_board.grid[bomb.y+1][bomb.x+18] == "P" or obj_board.grid[bomb.y+1][bomb.x+18] == "p":
+				os.system('aplay -q ./sounds/lose_life.wav&')
+
 				variables.LIVES -= 1
 				lose_powerups()
 				obj_balls = []
 				addBall()	
-
+				obj_board.grid[bomb.y][bomb.x+8] = " "
 				if(variables.LIVES==0):
 					variables.GAME_OVER = True
 					break
@@ -358,12 +366,12 @@ def paint_level(level):
 				j += BRICK_WIDTH
 
 		# Set Exploding Bricks
-		# j = 75
-		# for l in range(6):
-		# 	b = Explosive(j, 18)
-		# 	for k in range(j, j+BRICK_WIDTH):
-		# 		obj_board.grid[18][k] = 7
-		# 	j += BRICK_WIDTH
+		j = 75
+		for l in range(6):
+			b = Explosive(j, 18)
+			for k in range(j, j+BRICK_WIDTH):
+				obj_board.grid[18][k] = 7
+			j += BRICK_WIDTH
 
 	elif level == 2:
 	
@@ -432,6 +440,7 @@ def paint_level(level):
 	elif level == 4:
 		
 		variables.BOSS_MODE = True
+		os.system('aplay -q ./sounds/boss_mode.wav&')
 
 		# Print UFO
 		ufo.update_position(obj_paddle.start_x, 5)

@@ -6,7 +6,7 @@ import random
 obj_powerup = PowerUp(0, 0)
 
 def generate_powerup(x, y, direction, tbone):
-	pno = random.randint(1, 7)
+	pno = random.randint(1, 8)
 	if pno == 1:
 		obj_powerup.add_power("d", obj_board.grid[y][x])
 		obj_powerup.update_position(x, y)
@@ -77,6 +77,16 @@ def generate_powerup(x, y, direction, tbone):
 			tbone = 0
 		obj_powerup.update_momentum(tbone, direction)
 		obj_powerups.append(deepcopy(obj_powerup))
+	elif pno == 8:
+		obj_powerup.add_power("w", obj_board.grid[y][x])
+		obj_powerup.update_position(x, y)
+		obj_powerup.timestamp()
+		if tbone == -1:
+			tbone = 4
+		else:
+			tbone = 0
+		obj_powerup.update_momentum(tbone, direction)
+		obj_powerups.append(deepcopy(obj_powerup))
 
 def activate_power(power, num_balls = 0):
 	if power == "d":
@@ -112,6 +122,9 @@ def activate_power(power, num_balls = 0):
 		obj_board.grid[PADDLE_Y][obj_paddle.end_x] = 'p'
 		variables.SHOOT = True
 		variables.SHOOT_CREATE_TIME = datetime.datetime.utcnow()
+	elif power == "w":
+		for ball in obj_balls:
+			ball.wanda = True
 
 def lose_powerups_with_time():
 	for powerup in active_powerups:
@@ -158,6 +171,12 @@ def lose_powerups_with_time():
 				obj_board.grid[PADDLE_Y][obj_paddle.start_x] = 'P'
 				obj_board.grid[PADDLE_Y][obj_paddle.end_x] = 'P'
 				variables.SHOOT = False
+		elif powerup.power == "w":
+			time_spent = datetime.datetime.utcnow() - powerup.createdAt
+			if time_spent.total_seconds() > 10:
+				active_powerups.remove(powerup)
+				for ball in obj_balls:
+					ball.wanda = False
 						
 def lose_powerups():
 	for powerup in active_powerups:
@@ -204,6 +223,10 @@ def lose_powerups():
 			obj_board.grid[PADDLE_Y][obj_paddle.start_x] = 'P'
 			obj_board.grid[PADDLE_Y][obj_paddle.end_x] = 'P'
 			variables.SHOOT = False
+		elif powerup.power == "w":
+			active_powerups.remove(powerup)
+			for ball in obj_balls:
+				ball.wanda = False
 
 def shoot_balls():
 	if variables.SHOOT:

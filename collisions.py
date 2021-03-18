@@ -2,9 +2,18 @@ from powerups import *
 import variables
 import sys
 import datetime
+import os
 
 def ball_brick_collision(obj_ball, obj_board, next_y, next_x, direction, tbone):
-	if obj_ball.hulk:
+
+	os.system('aplay -q ./sounds/brick_hit.wav&')
+	
+	if obj_ball.wanda:
+		obj_board.update_board_brick_explosion(next_y, next_x, obj_board.grid[next_y][next_x], ' ')
+		variables.SCORE += 10
+		if variables.BOSS_MODE == False:
+			generate_powerup(next_x, next_y+1, direction, tbone)
+	elif obj_ball.hulk:
 		obj_board.update_board_brick(next_y, next_x, obj_board.grid[next_y][next_x], ' ')
 		variables.SCORE += 10
 		if variables.BOSS_MODE == False:
@@ -36,36 +45,20 @@ def explosive_collision(obj_ball, obj_board, next_y, next_x, direction, tbone):
 		print("GRENADE!", start_coordinate, end_coordinate, datetime.datetime.utcnow())
 		sys.stdout = original_stdout
 
-	obj_board.explode_bricks()
-
-	for x in range(start_coordinate, end_coordinate+1):
-		if SafeOrNot(x, next_y-1):
-			with open('logs.txt', 'a') as f:
-				sys.stdout = f
-				print("VICINITY", next_y-1, x, obj_board.grid[next_y-1][x], datetime.datetime.utcnow())
-				sys.stdout = original_stdout
-			if obj_board.grid[next_y-1][x] == 1 or obj_board.grid[next_y-1][x] == 2 or obj_board.grid[next_y-1][x] == 3 or obj_board.grid[next_y-1][x] == 10:
-				obj_board.update_board_brick(next_y-1, x, obj_board.grid[next_y-1][x], ' ')
-		if SafeOrNot(x, next_y+1):
-			if obj_board.grid[next_y+1][x] == 1 or obj_board.grid[next_y+1][x] == 2 or obj_board.grid[next_y+1][x] == 3 or obj_board.grid[next_y-1][x] == 10:
-				obj_board.update_board_brick(next_y+1, x, obj_board.grid[next_y-1][x], ' ')
-
-	if SafeOrNot(start_coordinate-1, next_y):
-		if obj_board.grid[next_y][next_x-1] == 1 or obj_board.grid[next_y][next_x-1] == 2 or obj_board.grid[next_y][next_x-1] == 3 or obj_board.grid[next_y-1][x] == 10:
-			obj_board.update_board_brick(next_y, x-1, obj_board.grid[next_y-1][x], ' ')
-	if SafeOrNot(end_coordinate+1, next_y):
-		if obj_board.grid[next_y][next_x+1] == 1 or obj_board.grid[next_y][next_x+1] == 2 or obj_board.grid[next_y][next_x+1] == 3 or obj_board.grid[next_y-1][x] == 10:
-			obj_board.update_board_brick(next_y, x+1, obj_board.grid[next_y-1][x], ' ')
-
-	if variabels.BOSS_MODE == False:
-		generate_powerup(next_x, next_y+1, direction, tbone)
+	for i in range(start_coordinate, end_coordinate):
+		if obj_board.grid[next_y][i] == 7:
+			obj_board.update_board_brick_explosion(next_y, i, 7, ' ')
+			variables.SCORE += 10
+		
 
 def ball_topwall_collision(obj_ball, obj_board):
+	os.system('aplay -q ./sounds/wall_hit.wav&')
 	obj_ball.update_velocity(obj_ball.vel_x, -1 * obj_ball.vel_y)
 	obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] = 'O'
 	obj_ball.update_position(obj_ball.x+obj_ball.vel_x, obj_ball.y - obj_ball.vel_y)
 
 def ball_sidewall_collision(obj_ball, obj_board):
+	os.system('aplay -q ./sounds/wall_hit.wav&')
 	obj_ball.update_velocity(-1 * obj_ball.vel_x, obj_ball.vel_y)
 	obj_board.grid[obj_ball.y - obj_ball.vel_y][obj_ball.x + obj_ball.vel_x] = 'O'
 	obj_ball.update_position(obj_ball.x+obj_ball.vel_x, obj_ball.y - obj_ball.vel_y)

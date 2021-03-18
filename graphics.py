@@ -43,7 +43,7 @@ def take_input():
 		variables.LANDING = True
 		paint_level_cleared_screen()
 		variables.GAME_START = False
-
+		os.system('aplay -q ./sounds/level_complete.wav&')
 		if variables.LEVEL == 5:
 			os.system('clear')
 			print("\033[0;0H")
@@ -180,6 +180,9 @@ def paint_win_screen():
 	print(Fore.LIGHTBLUE_EX + Style.BRIGHT+"YOUR SCORE WAS 🤑   "+str(variables.SCORE)+Style.RESET_ALL)
 
 def paint_lose_screen():
+
+	os.system('aplay -q ./sounds/lose_game.wav&')
+
 	print("\033[0;0H")
 	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "                                                                                                               ".center(SCREEN)+Style.RESET_ALL)
 	print(Fore.BLUE + Style.BRIGHT+ Back.WHITE + "                                                                                                               ".center(SCREEN)+Style.RESET_ALL)

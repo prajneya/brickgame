@@ -91,11 +91,11 @@ while True:
 
 		print(Fore.LIGHTBLUE_EX+Style.BRIGHT+"           ".center(SCREEN)+Style.RESET_ALL)
 
+		if variables.BOSS_MODE == False:
+			time_attack()
 		obj_board.print_board(0)
 		move_balls()
 		move_powerups()
-		if variables.BOSS_MODE == False:
-			time_attack()
 		shoot_balls()
 		move_bullets()
 		drop_bombs()
@@ -104,6 +104,7 @@ while True:
 			lose_powerups()
 			os.system('clear')
 			print("\033[0;0H")
+			os.system('aplay -q ./sounds/win_game.wav&')
 			paint_win_screen()
 			variables.GAME_START = False
 			quit()
@@ -116,6 +117,7 @@ while True:
 			variables.LANDING = True
 			paint_level_cleared_screen()
 			variables.GAME_START = False
+			os.system('aplay -q ./sounds/level_complete.wav&')
 
 		if variables.GAME_OVER:
 			os.system('clear')

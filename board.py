@@ -48,6 +48,36 @@ class Board:
         for k in range(start_coordinate, start_coordinate+BRICK_WIDTH):
             self.grid[i][k] = gridValue
 
+    def update_board_brick_explosion(self, i, j, brickValue, gridValue):
+        hit_coordinate = j
+
+        while(self.grid[i][j]==brickValue):
+            j -= 1
+
+        start_coordinate = j+1
+
+        while(hit_coordinate > start_coordinate+BRICK_WIDTH):
+            start_coordinate+=BRICK_WIDTH
+
+        original_stdout = sys.stdout
+        with open('logs.txt', 'a') as f:
+            sys.stdout = f
+            print("UPDATING BRICKS!", start_coordinate, start_coordinate+BRICK_WIDTH, datetime.datetime.utcnow())
+            sys.stdout = original_stdout
+
+        if self.grid[i][start_coordinate-1] == 1 or self.grid[i][start_coordinate-1] == 2 or self.grid[i][start_coordinate-1] == 3 or self.grid[i][start_coordinate-1] == 9 or self.grid[i][start_coordinate-1] == 10:
+            self.update_board_brick(i, start_coordinate-1, self.grid[i][start_coordinate-1], ' ')
+
+        if self.grid[i][start_coordinate+BRICK_WIDTH+1] == 1 or self.grid[i][start_coordinate+BRICK_WIDTH+1] == 2 or self.grid[i][start_coordinate+BRICK_WIDTH+1] == 3 or self.grid[i][start_coordinate+BRICK_WIDTH+1] == 9 or self.grid[i][start_coordinate+BRICK_WIDTH+1] == 10:
+            self.update_board_brick(i, start_coordinate+BRICK_WIDTH+1, self.grid[i][start_coordinate+BRICK_WIDTH+1], ' ')
+
+        for k in range(start_coordinate, start_coordinate+BRICK_WIDTH):
+            if self.grid[i-1][k] == 1 or self.grid[i-1][k] == 2 or self.grid[i-1][k] == 3 or self.grid[i-1][k] == 9 or self.grid[i-1][k] == 10:
+                self.update_board_brick(i-1, k, self.grid[i-1][k], ' ')
+            if self.grid[i+1][k] == 1 or self.grid[i+1][k] == 2 or self.grid[i+1][k] == 3 or self.grid[i+1][k] == 9 or self.grid[i+1][k] == 10:
+                self.update_board_brick(i+1, k, self.grid[i+1][k], ' ')
+            self.grid[i][k] = gridValue
+
     def explode_bricks(self):
         for k in range(EXPLOSION_START_X, EXPLOSION_END_X+1):
             self.grid[EXPLOSION_Y][k] = ' '
