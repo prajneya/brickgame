@@ -142,3 +142,4 @@ Last level involves the BOSS Fight, where you have to destroy a UFO to win the m
 ### Bonus
 
 Fireball Powerup: New powerup that gives the ball the ability to explode bricks it touches alongwith the bricks in its proximity
+Sounds Added
