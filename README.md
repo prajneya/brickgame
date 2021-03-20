@@ -1,5 +1,10 @@
 # BrickGame
 
+```diff
+- UPDATE!!!
++ Newer version is released, and code is in branch verion2.0.0. Please checkout to that branch to play the newer version with extra features!
+```
+
 A game that can be played on the Terminal based on the classic DX-Ball Game. Built using Python3 as part of DASS Assignment 2.
 
 ## Installation
